@@ -1,0 +1,29 @@
+Note that IP by default is 172.20.10.4 (Brian's hotspot)
+
+# Copying data from/to car
+## Copying collected data from donkey to host
+1) zip -r myzip.zip path/to/directory
+2) scp  jetsonnano@IP:~/mycar/myzip.zip ~/Desktop
+
+Alternatively:
+
+1) scp -r jetsonnano@IP:~/mycar/data/directory ~/Desktop
+
+## Copying trained model from host to donkey
+scp /path/to/model.h5 jetsonnano@IP:~/mycar/models/
+
+# Cleaning data
+1) conda activate donkey
+2) donkey tubclean path/to/tubs/
+3) browse to localhost:8886
+
+# Running the car
+## Running car from browser
+python manage drive
+
+## Running car with joystick (no interface pops up)
+python manage drive --js
+
+## Running car with trained model
+python manage drive --model=/path/to/model
+
