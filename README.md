@@ -16,4 +16,4 @@ Make sure you correctly install the [donkey car software](http://docs.donkeycar.
 ![donkey simulator 2](./thesis/images/sim2.png)
 
 ## 3 - Credits
-Credits to [Tawn Kramer](https://github.com/tawnkramer) and DonkeyCar community for providing the framework.
+Credits to [Tawn Kramer](https://github.com/tawnkramer) and [DonkeyCar community](https://www.donkeycar.com/community.html) for providing the framework.
