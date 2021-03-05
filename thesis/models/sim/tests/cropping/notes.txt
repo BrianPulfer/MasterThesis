@@ -1,0 +1,23 @@
+CROPPING TEST: NOTES
+
+ALL
+Max epochs: 100
+Optimizer: Adam
+LR: 0.0001
+Early stopping patience: 5 epochs
+dataset: 26.2.2021 - 10:22
+architecture: default (KearsLinear)
+Data Augmentation: Yes (default augmentations)
+
+
+
+CROP 80
+best val loss: 0.06965, epoch: 16
+
+
+CROP 100
+best val loss: 0.08915, epoch: 21
+
+
+CROP 120
+best val loss: 0.09072, epoch: 11

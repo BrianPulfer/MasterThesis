@@ -1,0 +1,26 @@
+ALL
+- Had data augmentation on.
+- Patience 15
+
+DAVE2 
+Val Loss:     0.08404 (epoch 68 + patience 15 = 83)
+Input size:   200x66
+
+CHAUFFEUR 
+Val Loss:     0.10847 (epoch 15 + patiencce 15 = 30)
+Input size:   320x120
+
+EPOCH 
+Val Loss:     0.05994 (epoch 57 + patience 15 = 72)
+Input size:   200x66
+
+DEFAULT DONKEY
+Val Loss:     0.06941 (epoch 42 +  patience 15 = 57)
+Input size:   320x140
+
+
+
+RAMBO
+-
+-
+
