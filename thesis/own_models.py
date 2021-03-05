@@ -5,6 +5,7 @@ from donkeycar.parts.keras import Convolution2D, Lambda, Flatten, Dense, Dropout
 DAVE2 = 'dave2'
 CHAUFFEUR = 'chauffeur'
 EPOCH = 'epoch'
+RAMBO = 'rambo'
 DEFAULT_DONKEY = 'defaultdonkey'
 
 
@@ -16,6 +17,8 @@ def get_own_model(model_name):
         model = get_chaffeur_model()
     elif model_name == EPOCH:
         model = get_epoch_model()
+    elif model_name == RAMBO:
+        model = get_rambo_model()
     elif model_name == DEFAULT_DONKEY:
         model = get_default_donkeycar_model()
     else:
@@ -153,10 +156,38 @@ def get_default_donkeycar_model(input_shape=(140, 320, 3)):
     for i in range(2):
         outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
 
-    model = Model(inputs=[img_in], outputs=outputs)
-
-    return model
+    return Model(inputs=[img_in], outputs=outputs)
 
 
 def get_epoch_model():
-    pass
+    img_in = Input()
+    x = img_in
+
+    # Normalization
+    x = Lambda(lambda x: x / 127.5 - 1.0)(x)
+
+    x = Convolution2D(32, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.25)(x)
+
+    x = Convolution2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.25)(x)
+
+    x = Convolution2D(128, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.5)(x)
+
+    x = Flatten()(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dropout(.5)(x)
+
+    outputs = []
+    for i in range(2):
+        outputs.append(Dense(1, name='n_outputs' + str(i))(x))
+
+    return Model(inputs=[img_in], outputs=outputs)
+
+
+def get_rambo_model():
+    raise NotImplemented()
