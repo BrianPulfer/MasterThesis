@@ -1,56 +1,43 @@
 from donkeycar.parts.keras import KerasPilot, Model
 from donkeycar.parts.keras import Convolution2D, Lambda, Flatten, Dense, Dropout, Input, MaxPooling2D
 
-
-class Dave2(KerasPilot):
-    def __init__(self, *args, **kwargs):
-        super(Dave2, self).__init__(*args, **kwargs)
-        self.model = get_dave2_model()
-        self.compile()
-
-    def compile(self):
-        self.model.compile(optimizer=self.optimizer, loss='mse')
-
-    def run(self, img_arr):
-        img_arr = img_arr.reshape((1,) + img_arr.shape)
-        outputs = self.model.predict(img_arr)
-        steering = outputs[0]
-        throttle = outputs[1]
-        return steering[0][0], throttle[0][0]
+# Definitions
+DAVE2 = 'dave2'
+CHAUFFEUR = 'chauffeur'
+EPOCH = 'epoch'
+DEFAULT_DONKEY = 'defaultdonkey'
 
 
-class Chauffeur(KerasPilot):
-    def __init__(self, *args, **kwargs):
-        super(Chauffeur, self).__init__(*args, **kwargs)
-        self.model = get_chaffeur_model()
-        self.compile()
+def get_own_model(model_name):
+    model = None
+    if model_name == DAVE2:
+        model = get_dave2_model()
+    elif model_name == CHAUFFEUR:
+        model = get_chaffeur_model()
+    elif model_name == EPOCH:
+        model = get_epoch_model()
+    elif model_name == DEFAULT_DONKEY:
+        model = get_default_donkeycar_model()
+    else:
+        return None
 
-    def compile(self):
-        self.model.compile(optimizer=self.optimizer, loss='mse')
+    class OwnModel(KerasPilot):
+        def __init__(self, *args, **kwargs):
+            super(OwnModel, self).__init__(*args, **kwargs)
+            self.model = model
+            self.compile()
 
-    def run(self, img_arr):
-        img_arr = img_arr.reshape((1,) + img_arr.shape)
-        outputs = self.model.predict(img_arr)
-        steering = outputs[0]
-        throttle = outputs[1]
-        return steering[0][0], throttle[0][0]
+        def compile(self):
+            self.model.compile(optimizer=self.optimizer, loss='mse')
 
+        def run(self, img_arr):
+            img_arr = img_arr.reshape((1,) + img_arr.shape)
+            outputs = self.model.predict(img_arr)
+            steering = outputs[0]
+            throttle = outputs[1]
+            return steering[0][0], throttle[0][0]
 
-class DefaultDonkeyCar(KerasPilot):
-    def __init__(self, *args, **kwargs):
-        super(DefaultDonkeyCar, self).__init__(*args, **kwargs)
-        self.model = get_default_donkeycar_model()
-        self.compile()
-
-    def compile(self):
-        self.model.compile(optimizer=self.optimizer, loss='mse')
-
-    def run(self, img_arr):
-        img_arr = img_arr.reshape((1,) + img_arr.shape)
-        outputs = self.model.predict(img_arr)
-        steering = outputs[0]
-        throttle = outputs[1]
-        return steering[0][0], throttle[0][0]
+    return OwnModel
 
 
 def get_dave2_model(input_shape=(66, 200, 3)):
@@ -169,3 +156,7 @@ def get_default_donkeycar_model(input_shape=(140, 320, 3)):
     model = Model(inputs=[img_in], outputs=outputs)
 
     return model
+
+
+def get_epoch_model():
+    pass

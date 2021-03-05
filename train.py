@@ -318,15 +318,9 @@ def train(cfg, tub_names, model_name, transfer_model, model_type, continuous, au
     else:
         train_type = model_type
 
-    if model_type == "dave2":
-        from thesis.own_models import Dave2
-        kl = Dave2()
-    elif model_type == "chauffeur":
-        from thesis.own_models import Chauffeur
-        kl = Chauffeur()
-    elif model_type == "defaultdonkey":
-        from thesis.own_models import DefaultDonkeyCar
-        kl = DefaultDonkeyCar()
+    from thesis.own_models import DAVE2, CHAUFFEUR, EPOCH, DEFAULT_DONKEY, get_own_model
+    if model_type in [DAVE2, CHAUFFEUR, EPOCH, DEFAULT_DONKEY]:
+        kl = get_own_model(model_type)()
     else:
         kl = get_model_by_type(train_type, cfg=cfg)
 
