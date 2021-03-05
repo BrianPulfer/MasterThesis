@@ -46,7 +46,9 @@ def get_own_model(model_name):
 def get_dave2_model(input_shape=(66, 200, 3)):
     img_in = Input(shape=input_shape, name='img_in')
     x = img_in
-    x = Lambda(lambda x: x / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
+
+    # Normalization is carried out in donkey car train data generator
+    #x = Lambda(lambda x: x / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
 
     # 5x5 Convolutional layers with stride of 2x2
     x = Convolution2D(24, (5, 5), strides=(2, 2), name='conv1', activation='elu')(x)
@@ -72,10 +74,13 @@ def get_dave2_model(input_shape=(66, 200, 3)):
     x = Dropout(.5, name='do3')(x)
 
     # Output layer with tanh activation
-    outputs = []
+    outputs = [
+        Dense(1, activation='tanh', name='n_outputs0')(x),
+        Dense(1, activation='sigmoid', name='n_outputs1')(x),
+    ]
 
-    for i in range(2):
-        outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
+    #for i in range(2):
+    #    outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
 
     return Model(inputs=[img_in], outputs=outputs)
 
@@ -121,12 +126,53 @@ def get_chaffeur_model(input_shape=(120, 320, 3)):
     x = Dropout(0.5)(x)
 
     # Classification
-    outputs = []
+    outputs = [
+        Dense(1, activation='tanh', name='n_outputs0')(x),
+        Dense(1, activation='sigmoid', name='n_outputs1')(x),
+    ]
 
-    for i in range(2):
-        outputs.append(Dense(1, name='n_outputs' + str(i), kernel_initializer='he_normal')(x))
+    #for i in range(2):
+    #    outputs.append(Dense(1, name='n_outputs' + str(i), kernel_initializer='he_normal')(x))
 
     return Model(inputs=[img_in], outputs=outputs)
+
+
+def get_epoch_model(input_shape=(66, 200, 3)):
+    img_in = Input(shape=input_shape)
+    x = img_in
+
+    # Normalization
+    # x = Lambda(lambda x: x / 127.5 - 1.0)(x)
+
+    x = Convolution2D(32, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.25)(x)
+
+    x = Convolution2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.25)(x)
+
+    x = Convolution2D(128, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.5)(x)
+
+    x = Flatten()(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dropout(.5)(x)
+
+    outputs = [
+        Dense(1, activation='tanh', name='n_outputs0')(x),
+        Dense(1, activation='sigmoid', name='n_outputs1')(x),
+    ]
+
+    # for i in range(2):
+    #    outputs.append(Dense(1, name='n_outputs' + str(i))(x))
+
+    return Model(inputs=[img_in], outputs=outputs)
+
+
+def get_rambo_model():
+    raise NotImplementedError("Rambo model is not yet implemented")
 
 
 def get_default_donkeycar_model(input_shape=(140, 320, 3)):
@@ -151,43 +197,12 @@ def get_default_donkeycar_model(input_shape=(140, 320, 3)):
     x = Dense(50, activation='relu')(x)
     x = Dropout(drop)(x)
 
-    outputs = []
+    outputs = [
+        Dense(1, activation='tanh', name='n_outputs0')(x),
+        Dense(1, activation='sigmoid', name='n_outputs1')(x),
+    ]
 
-    for i in range(2):
-        outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
-
-    return Model(inputs=[img_in], outputs=outputs)
-
-
-def get_epoch_model():
-    img_in = Input()
-    x = img_in
-
-    # Normalization
-    x = Lambda(lambda x: x / 127.5 - 1.0)(x)
-
-    x = Convolution2D(32, (3, 3), activation='relu', padding='same')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
-    x = Dropout(0.25)(x)
-
-    x = Convolution2D(64, (3, 3), activation='relu', padding='same')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
-    x = Dropout(0.25)(x)
-
-    x = Convolution2D(128, (3, 3), activation='relu', padding='same')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
-    x = Dropout(0.5)(x)
-
-    x = Flatten()(x)
-    x = Dense(1024, activation='relu')(x)
-    x = Dropout(.5)(x)
-
-    outputs = []
-    for i in range(2):
-        outputs.append(Dense(1, name='n_outputs' + str(i))(x))
+    # for i in range(2):
+    #   outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
 
     return Model(inputs=[img_in], outputs=outputs)
-
-
-def get_rambo_model():
-    raise NotImplemented()
