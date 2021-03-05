@@ -318,7 +318,17 @@ def train(cfg, tub_names, model_name, transfer_model, model_type, continuous, au
     else:
         train_type = model_type
 
-    kl = get_model_by_type(train_type, cfg=cfg)
+    if model_type == "dave2":
+        from thesis.own_models import Dave2
+        kl = Dave2()
+    elif model_type == "chauffeur":
+        from thesis.own_models import Chauffeur
+        kl = Chauffeur()
+    elif model_type == "defaultdonkey":
+        from thesis.own_models import DefaultDonkeyCar
+        kl = DefaultDonkeyCar()
+    else:
+        kl = get_model_by_type(train_type, cfg=cfg)
 
     opts['categorical'] = type(kl) in [KerasCategorical, KerasBehavioral]
 

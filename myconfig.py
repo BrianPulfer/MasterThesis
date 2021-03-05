@@ -21,8 +21,8 @@
 # 
 # #CAMERA
 CAMERA_TYPE = "CSIC"   # (PICAM|WEBCAM|CVCAM|CSIC|V4L|D435|MOCK|IMAGE_LIST)
-IMAGE_W = 320 # These shapes are used for training (network input size)
-IMAGE_H = 240 # These shapes are used for training (network input size)
+IMAGE_W = 200 # These shapes are used for training (network input size)
+IMAGE_H = 110 # These shapes are used for training (network input size)
 # IMAGE_DEPTH = 3         # default RGB=3, make 1 for mono
 # CAMERA_FRAMERATE = DRIVE_LOOP_HZ
 # CAMERA_VFLIP = False
@@ -97,11 +97,11 @@ MAX_EPOCHS = 100                #how many times to visit all records of your dat
 # SHOW_PLOT = True                #would you like to see a pop up display of final loss?
 # VERBOSE_TRAIN = True             #would you like to see a progress bar with text during training?
 # USE_EARLY_STOP = True           #would you like to stop the training if we see it's not improving fit?
-# EARLY_STOP_PATIENCE = 5         #how many epochs to wait before no improvement
+EARLY_STOP_PATIENCE = 5         #how many epochs to wait before no improvement
 # MIN_DELTA = .0005               #early stop will want this much loss change before calling it improved.
 # PRINT_MODEL_SUMMARY = True      #print layers and weights to stdout
 OPTIMIZER = "adam"                #adam, sgd, rmsprop, etc.. None accepts default
-LEARNING_RATE = 0.0001           #only used when OPTIMIZER specified
+LEARNING_RATE = 0.0001            #only used when OPTIMIZER specified
 # LEARNING_RATE_DECAY = 0.0       #only used when OPTIMIZER specified
 # SEND_BEST_MODEL_TO_PI = False   #change to true to automatically send best model during training
 # CACHE_IMAGES = True             #keep images in memory. will speed succesive epochs, but crater if not enough mem.
@@ -123,7 +123,7 @@ LEARNING_RATE = 0.0001           #only used when OPTIMIZER specified
 # # Region of interst cropping
 # # only supported in Categorical and Linear models.
 # # If these crops values are too large, they will cause the stride values to become negative and the model with not be valid.
-ROI_CROP_TOP = 100 # int(IMAGE_H * 0.4) # + 24                  #the number of rows of pixels to ignore on the top of the image
+ROI_CROP_TOP = 44 # int(IMAGE_H * 0.4)                   #the number of rows of pixels to ignore on the top of the image
 # ROI_CROP_BOTTOM = 0                 #the number of rows of pixels to ignore on the bottom of the image
 # 
 # #Model transfer options
@@ -245,7 +245,7 @@ DONKEY_GYM = True
 # DONKEY_SIM_PATH = "/Users/brianpulfer/Desktop/DonkeyCar_Repositories/simulator/DonkeySimMac_april2020/donkey_sim.app/Contents/MacOS/sdsim" #"/home/tkramer/projects/sdsandbox/sdsim/build/DonkeySimLinux/donkey_sim.x86_64" when racing on virtual-race-league use "remote", or user "remote" when you want to start the sim manually first.
 # DONKEY_SIM_PATH = "/Users/brianpulfer/Desktop/DonkeyCar_Repositories/simulator/DonkeySimMaC/donkey_sim.app/Contents/MacOS/donkey_sim" # Latest Simulator
 # DONKEY_SIM_PATH = "remote" # Start simulator first
-DONKEY_SIM_PATH = "/Users/brianpulfer/Desktop/Test.app/Contents/MacOS/FUSI Simulator"
+DONKEY_SIM_PATH = "/Users/brianpulfer/Desktop/FUSI Simulator.app/Contents/MacOS/FUSI Simulator"
 
 DONKEY_GYM_ENV_NAME = "donkey-warehouse-v0" #"donkey-mountain-track-v0" # ("donkey-generated-track-v0"|"donkey-generated-roads-v0"|"donkey-warehouse-v0"|"donkey-avc-sparkfun-v0")
 carname = "Brian"
