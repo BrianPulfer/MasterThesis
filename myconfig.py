@@ -248,7 +248,7 @@ DONKEY_GYM = True
 DONKEY_SIM_PATH = "/Users/brianpulfer/Desktop/FUSI Simulator.app/Contents/MacOS/FUSI Simulator"
 
 DONKEY_GYM_ENV_NAME = "donkey-warehouse-v0" #"donkey-mountain-track-v0" # ("donkey-generated-track-v0"|"donkey-generated-roads-v0"|"donkey-warehouse-v0"|"donkey-avc-sparkfun-v0")
-carname = "Brian"
+carname = "Dave2"
 GYM_CONF = { "body_style" : "donkey", "body_rgb" : (128, 128, 128), "car_name" : carname, "font_size" : 100} # body style(donkey|bare|car01) body rgb 0-255
 GYM_CONF["racer_name"] = "Brian"
 GYM_CONF["country"] = "CH"
