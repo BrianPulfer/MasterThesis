@@ -48,7 +48,8 @@ def get_dave2_model(input_shape=(66, 200, 3)):
     x = img_in
 
     # Normalization is carried out in donkey car train data generator
-    #x = Lambda(lambda x: x / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
+    # x = Lambda(lambda x: x / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
+    x = Lambda(lambda x: x * 255 / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
 
     # 5x5 Convolutional layers with stride of 2x2
     x = Convolution2D(24, (5, 5), strides=(2, 2), name='conv1', activation='elu')(x)
