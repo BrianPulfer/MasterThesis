@@ -144,6 +144,7 @@ def get_epoch_model(input_shape=(66, 200, 3)):
 
     # Normalization
     # x = Lambda(lambda x: x / 127.5 - 1.0)(x)
+    # x = Lambda(lambda x: x * 255 / 127.5 - 1.0)(x)
 
     x = Convolution2D(32, (3, 3), activation='relu', padding='same')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2))(x)
