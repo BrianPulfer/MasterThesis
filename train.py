@@ -18,6 +18,7 @@ Options:
     --figure_format=png    The file format of the generated figure (see https://matplotlib.org/api/_as_gen/matplotlib.pyplot.savefig.html), e.g. 'png', 'pdf', 'svg', ...
 """
 import os
+import cv2
 import glob
 import random
 import json
@@ -318,11 +319,7 @@ def train(cfg, tub_names, model_name, transfer_model, model_type, continuous, au
     else:
         train_type = model_type
 
-    from thesis.own_models import DAVE2, CHAUFFEUR, EPOCH, RAMBO, DEFAULT_DONKEY, get_own_model
-    if model_type in [DAVE2, CHAUFFEUR, EPOCH, RAMBO, DEFAULT_DONKEY]:
-        kl = get_own_model(model_type)()
-    else:
-        kl = get_model_by_type(train_type, cfg=cfg)
+    kl = get_model_by_type(train_type, cfg=cfg)
 
     opts['categorical'] = type(kl) in [KerasCategorical, KerasBehavioral]
 
@@ -403,9 +400,11 @@ def train(cfg, tub_names, model_name, transfer_model, model_type, continuous, au
             has_bvh = type(kl) is KerasBehavioral
             img_out = type(kl) is KerasLatent
             loc_out = type(kl) is KerasLocalizer
-            
+
+            """
             if img_out:
                 import cv2
+            """
 
             for key in keys:
 
@@ -466,6 +465,11 @@ def train(cfg, tub_names, model_name, transfer_model, model_type, continuous, au
                         
                         if has_bvh:
                             inputs_bvh.append(record['behavior_arr'])
+
+                        if model_type == DAVE2:
+                            img_arr = cv2.cvtColor((img_arr*255).astype('uint8'), cv2.COLOR_RGB2YUV)
+                            img_arr = img_arr.astype('float')
+                            img_arr /= 255
 
                         inputs_img.append(img_arr)
                         angles.append(record['angle'])

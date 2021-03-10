@@ -34,6 +34,9 @@ from donkeycar.parts.file_watcher import FileWatcher
 from donkeycar.parts.launch import AiLaunch
 from donkeycar.utils import *
 
+# Import own models
+from thesis.own_models import DAVE2
+
 # TODO: Fix by me (Brian)
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
@@ -310,7 +313,13 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
             self.cfg = cfg
 
         def run(self, img_arr):
-            return normalize_and_crop(img_arr, self.cfg)
+            img_arr = normalize_and_crop(img_arr, self.cfg)
+            if model_type == DAVE2:
+                import cv2
+                img_arr = cv2.cvtColor((img_arr * 255).astype('uint8'), cv2.COLOR_RGB2YUV)
+                img_arr = img_arr.astype('float')
+                img_arr /= 255
+            return img_arr
 
     if "coral" in model_type:
         inf_input = 'cam/image_array'
