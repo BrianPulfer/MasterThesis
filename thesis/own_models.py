@@ -57,22 +57,16 @@ def get_dave2_model(input_shape=(66, 200, 3)):
     x = Convolution2D(48, (5, 5), strides=(2, 2), name='conv3', activation='elu')(x)
 
     # 3x3 Convolutional layers with stride of 1x1
-    x = Convolution2D(64, (3, 3), strides=(1, 1), name='conv4', activation='elu')(x)
-    x = Convolution2D(64, (3, 3), strides=(1, 1), name='conv5', activation='elu')(x)
-
-    # Dropout ?
-    # x = Dropout(0.05)(x)
+    x = Convolution2D(64, (3, 3), name='conv4', activation='elu')(x)
+    x = Convolution2D(64, (3, 3), name='conv5', activation='elu')(x)
 
     # Flatten before passing to Fully Connected layers
     x = Flatten()(x)
 
     # Three fully connected layers
     x = Dense(100, name='fc1', activation='elu')(x)
-    x = Dropout(.5, name='do1')(x)
     x = Dense(50, name='fc2', activation='elu')(x)
-    x = Dropout(.5, name='do2')(x)
     x = Dense(10, name='fc3', activation='elu')(x)
-    x = Dropout(.5, name='do3')(x)
 
     # Output layer with tanh activation
     outputs = [
