@@ -87,7 +87,7 @@ def get_dave2_model(input_shape=(66, 200, 3)):
 
 
 def get_chaffeur_model(input_shape=(120, 320, 3)):
-    from donkeycar.parts.keras import Dropout as SpatialDropout2D
+    from donkeycar.parts.keras import SpatialDropout2D
 
     def get_convolution_kernels(n, kernel_size):
         return Convolution2D(n,

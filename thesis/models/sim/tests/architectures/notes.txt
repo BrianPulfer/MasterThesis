@@ -3,20 +3,24 @@ ALL
 - Patience 15
 
 DAVE2 (Right preprocessing)
-Val Loss:     0.05716 (at epoch 87)
-Input size:   200x66
+Val Loss:               0.05716 (at epoch 87)
+Input size:             200x66
+Trainable params:       252,230
 
 EPOCH 
-Val Loss:     0.05994 (epoch 57 + patience 15 = 72)
-Input size:   200x66
-
-DEFAULT DONKEY
-Val Loss:     0.06941 (epoch 42 +  patience 15 = 57)
-Input size:   320x140
+Val Loss:               0.05994 (epoch 57 + patience 15 = 72)
+Input size:             200x66
+Trainable params:       26,310,722
 
 CHAUFFEUR
-Val Loss:     0.10847 (epoch 15 + patiencce 15 = 30)
-Input size:   320x120
+Val Loss:               0.06685 (epoch 15 + patiencce 15 = 30)
+Input size:             320x120
+Trainable params:       62,218
+
+DEFAULT DONKEY
+Val Loss:               0.06941 (epoch 42 +  patience 15 = 57)
+Input size:             320x140
+Trainable params:       2,263,428
 
 
 
