@@ -13,7 +13,7 @@ Input size:             200x66
 Trainable params:       26,310,722
 
 CHAUFFEUR
-Val Loss:               0.06685 (epoch 15 + patiencce 15 = 30)
+Val Loss:               0.06685 (epoch ~60 + patiencce 15 = 75)
 Input size:             320x120
 Trainable params:       62,218
 
