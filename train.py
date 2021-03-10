@@ -39,7 +39,7 @@ from donkeycar.parts.keras import KerasLinear, KerasIMU,\
      KerasCategorical, KerasBehavioral, Keras3D_CNN,\
      KerasRNN_LSTM, KerasLatent, KerasLocalizer
 from donkeycar.parts.augment import augment_image
-from donkeycar.utils import *
+from thesis.utils import *
 
 figure_format = 'png'
 
