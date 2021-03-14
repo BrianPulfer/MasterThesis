@@ -2,15 +2,15 @@ ALL
 - Had data augmentation on.
 - Patience 15
 
-DAVE2
-Val Loss:               0.05246 (epoch 56 + patience 15 = 71)
-Input size:             200x66
-Trainable params:       252,230
-
-EPOCH 
+EPOCH
 Val Loss:               0.05994 (epoch 57 + patience 15 = 72)
 Input size:             200x66
 Trainable params:       26,310,722
+
+DAVE2
+Val Loss:               0.06039 (epoch 40 + patience 15 = 55)
+Input size:             200x66
+Trainable params:       252,230
 
 CHAUFFEUR
 Val Loss:               0.06685 (epoch ~60 + patience 15 = 75)
