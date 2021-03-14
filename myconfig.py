@@ -18,7 +18,13 @@
 # #VEHICLE
 # DRIVE_LOOP_HZ = 20      # the vehicle loop will pause if faster than this speed.
 # MAX_LOOPS = None        # the vehicle loop can abort after this many iterations, when given a positive integer.
-# 
+#
+# # Region of interst cropping
+# # only supported in Categorical and Linear models.
+# # If these crops values are too large, they will cause the stride values to become negative and the model with not be valid.
+ROI_CROP_TOP = 44 # int(IMAGE_H * 0.4)                   #the number of rows of pixels to ignore on the top of the image
+# ROI_CROP_BOTTOM = 0                 #the number of rows of pixels to ignore on the bottom of the image
+#
 # #CAMERA
 CAMERA_TYPE = "CSIC"   # (PICAM|WEBCAM|CVCAM|CSIC|V4L|D435|MOCK|IMAGE_LIST)
 IMAGE_W = 200 # These shapes are used for training (network input size)
@@ -119,13 +125,7 @@ LEARNING_RATE = 0.0001            #only used when OPTIMIZER specified
 # PI_PASSWD = "123a"             # password is optional. Only used from Windows machine. Ubuntu and mac users should copy their public keys to the pi. `ssh-copy-id username@hostname`
 # PI_HOSTNAME = "raspberrypi.local"   # the network hostname or ip address
 # PI_DONKEY_ROOT = "/home/pi/mycar"   # the location of the mycar dir on the pi. this will be used to help locate the final model destination.
-# 
-# # Region of interst cropping
-# # only supported in Categorical and Linear models.
-# # If these crops values are too large, they will cause the stride values to become negative and the model with not be valid.
-ROI_CROP_TOP = 44 # int(IMAGE_H * 0.4)                   #the number of rows of pixels to ignore on the top of the image
-# ROI_CROP_BOTTOM = 0                 #the number of rows of pixels to ignore on the bottom of the image
-# 
+#
 # #Model transfer options
 # #When copying weights during a model transfer operation, should we freeze a certain number of layers
 # #to the incoming weights and not allow them to change during training?
