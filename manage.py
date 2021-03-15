@@ -319,9 +319,12 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
             img_arr = normalize_and_crop(img_arr, self.cfg)
             if model_type == DAVE2:
                 import cv2
-                img_arr = cv2.cvtColor((img_arr * 255).astype('uint8'), cv2.COLOR_RGB2YUV)
-                img_arr = img_arr.astype('float')
-                img_arr /= 255
+                try:
+                    img_arr = cv2.cvtColor((img_arr * 255).astype('uint8'), cv2.COLOR_RGB2YUV)
+                    img_arr = img_arr.astype('float')
+                    img_arr /= 255
+                except Exception:
+                    print("WARNING: Could not pre-process image properly for DAVE2 model")
             return img_arr
 
     if "coral" in model_type:
