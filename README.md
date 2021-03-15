@@ -26,5 +26,6 @@ Replace the following files in your /mycar/  project with the ones found in this
 Also add the /thesis folder you find in this repository in your /mycar/ folder.<br/>
 <br/>
 Finally, change the path of the simulator `DONKEY_SIM_PATH` in the myconfig.py file with the path to my own version of the simulator. Optionally, modify personal information like the car name and others.
+
 ## 3 - Credits
 Credits to [Tawn Kramer](https://github.com/tawnkramer) and [DonkeyCar community](https://www.donkeycar.com/community.html) for providing the framework.
