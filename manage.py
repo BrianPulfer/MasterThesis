@@ -4,13 +4,13 @@ Scripts to drive a donkey 2 car
 
 Usage:
     manage.py (drive) [--model=<model>] [--js] [--type=(linear|categorical|rnn|imu|behavior|3d|localizer|latent)] [--camera=(single|stereo)] [--meta=<key:value> ...] [--myconfig=<filename>]
-    manage.py (train) [--tub320x240=<tub1,tub2,..tubn>] [--file=<file> ...] (--model=<model>) [--transfer=<model>] [--type=(linear|categorical|rnn|imu|behavior|3d|localizer)] [--continuous] [--aug] [--myconfig=<filename>]
+    manage.py (train) [--tub320x240_train=<tub1,tub2,..tubn>] [--file=<file> ...] (--model=<model>) [--transfer=<model>] [--type=(linear|categorical|rnn|imu|behavior|3d|localizer)] [--continuous] [--aug] [--myconfig=<filename>]
 
 
 Options:
     -h --help               Show this screen.
     --js                    Use physical joystick.
-    -f --file=<file>        A text file containing paths to tub320x240 files, one per line. Option may be used more than once.
+    -f --file=<file>        A text file containing paths to tub320x240_train files, one per line. Option may be used more than once.
     --meta=<key:value>      Key/Value strings describing describing a piece of meta data about this drive. Option may be used more than once.
     --myconfig=filename     Specify myconfig file to use. 
                             [default: myconfig.py]
@@ -183,7 +183,7 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
         ctr = LocalWebController(port=cfg.WEB_CONTROL_PORT, mode=cfg.WEB_INIT_MODE)
         
         V.add(ctr,
-          inputs=['cam/image_array', 'tub320x240/num_records'],
+          inputs=['cam/image_array', 'tub320x240_train/num_records'],
           outputs=['user/angle', 'user/throttle', 'user/mode', 'recording'],
           threaded=True)
 
@@ -286,7 +286,7 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
             return 0
 
     rec_tracker_part = RecordTracker()
-    V.add(rec_tracker_part, inputs=["tub320x240/num_records"], outputs=['records/alert'])
+    V.add(rec_tracker_part, inputs=["tub320x240_train/num_records"], outputs=['records/alert'])
 
     if cfg.AUTO_RECORD_ON_THROTTLE and isinstance(ctr, JoystickController):
         #then we are not using the circle button. hijack that to force a record count indication
@@ -582,9 +582,9 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
         from donkeycar.parts.oled import OLEDPart
         auto_record_on_throttle = cfg.USE_JOYSTICK_AS_DEFAULT and cfg.AUTO_RECORD_ON_THROTTLE
         oled_part = OLEDPart(cfg.SSD1306_128_32_I2C_BUSNUM, auto_record_on_throttle=auto_record_on_throttle)
-        V.add(oled_part, inputs=['recording', 'tub320x240/num_records', 'user/mode'], outputs=[], threaded=True)
+        V.add(oled_part, inputs=['recording', 'tub320x240_train/num_records', 'user/mode'], outputs=[], threaded=True)
 
-    #add tub320x240 to save data
+    #add tub320x240_train to save data
 
     inputs=['cam/image_array',
             'user/angle', 'user/throttle',
@@ -615,7 +615,7 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
 
     th = TubHandler(path=cfg.DATA_PATH)
     tub = th.new_tub_writer(inputs=inputs, types=types, user_meta=meta)
-    V.add(tub, inputs=inputs, outputs=["tub320x240/num_records"], run_condition='recording')
+    V.add(tub, inputs=inputs, outputs=["tub320x240_train/num_records"], run_condition='recording')
 
     if cfg.PUB_CAMERA_IMAGES:
         from donkeycar.parts.network import TCPServeValue
@@ -631,7 +631,7 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
             print("You can now go to <your hostname.local>:%d to drive your car." % cfg.WEB_CONTROL_PORT)
     elif isinstance(ctr, JoystickController):
         print("You can now move your joystick to drive your car.")
-        #tell the controller about the tub320x240
+        #tell the controller about the tub320x240_train
         ctr.set_tub(tub)
 
         if cfg.BUTTON_PRESS_NEW_TUB:
@@ -639,7 +639,7 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
             def new_tub_dir():
                 V.parts.pop()
                 tub = th.new_tub_writer(inputs=inputs, types=types, user_meta=meta)
-                V.add(tub, inputs=inputs, outputs=["tub320x240/num_records"], run_condition='recording')
+                V.add(tub, inputs=inputs, outputs=["tub320x240_train/num_records"], run_condition='recording')
                 ctr.set_tub(tub)
 
             ctr.set_button_down_trigger('cross', new_tub_dir)
@@ -665,7 +665,7 @@ if __name__ == '__main__':
     if args['train']:
         from train import multi_train, preprocessFileList
 
-        tub = args['--tub320x240']
+        tub = args['--tub320x240_train']
         model = args['--model']
         transfer = args['--transfer']
         model_type = args['--type']

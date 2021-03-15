@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Scripts to train a keras model using tensorflow.
-Uses the data written by the donkey v2.2 tub320x240 writer,
+Uses the data written by the donkey v2.2 tub320x240_train writer,
 but faster training with proper sampling of distribution over tubs. 
 Has settings for continuous training that will look for new files as it trains. 
 Modify on_best_model if you wish continuous training to update your pi as it builds.
@@ -10,11 +10,11 @@ Basic usage should feel familiar: python train.py --model models/mypilot
 
 
 Usage:
-    train.py [--tub320x240=<tub1,tub2,..tubn>] [--file=<file> ...] (--model=<model>) [--transfer=<model>] [--type=(linear|latent|categorical|rnn|imu|behavior|3d|look_ahead|tensorrt_linear|tflite_linear|coral_tflite_linear)] [--figure_format=<figure_format>] [--continuous] [--aug]
+    train.py [--tub320x240_train=<tub1,tub2,..tubn>] [--file=<file> ...] (--model=<model>) [--transfer=<model>] [--type=(linear|latent|categorical|rnn|imu|behavior|3d|look_ahead|tensorrt_linear|tflite_linear|coral_tflite_linear)] [--figure_format=<figure_format>] [--continuous] [--aug]
 
 Options:
     -h --help              Show this screen.
-    -f --file=<file>       A text file containing paths to tub320x240 files, one per line. Option may be used more than once.
+    -f --file=<file>       A text file containing paths to tub320x240_train files, one per line. Option may be used more than once.
     --figure_format=png    The file format of the generated figure (see https://matplotlib.org/api/_as_gen/matplotlib.pyplot.savefig.html), e.g. 'png', 'pdf', 'svg', ...
 """
 import os
@@ -928,9 +928,9 @@ def prune(model, validation_generator, val_steps, cfg):
 
 def extract_data_from_pickles(cfg, tubs):
     """
-    Extracts record_{id}.json and image from a pickle with the same id if exists in the tub320x240.
-    Then writes extracted json/jpg along side the source pickle that tub320x240.
-    This assumes the format {id}.pickle in the tub320x240 directory.
+    Extracts record_{id}.json and image from a pickle with the same id if exists in the tub320x240_train.
+    Then writes extracted json/jpg along side the source pickle that tub320x240_train.
+    This assumes the format {id}.pickle in the tub320x240_train directory.
     :param cfg: config with data location configuration. Generally the global config object.
     :param tubs: The list of tubs involved in training.
     :return: implicit None.
@@ -938,7 +938,7 @@ def extract_data_from_pickles(cfg, tubs):
     t_paths = gather_tub_paths(cfg, tubs)
     for tub_path in t_paths:
         file_paths = glob.glob(join(tub_path, '*.pickle'))
-        print('found {} pickles writing json records and images in tub320x240 {}'.format(len(file_paths), tub_path))
+        print('found {} pickles writing json records and images in tub320x240_train {}'.format(len(file_paths), tub_path))
         for file_path in file_paths:
             # print('loading data from {}'.format(file_paths))
             with open(file_path, 'rb') as f:
@@ -1029,7 +1029,7 @@ def preprocessFileList( filelist ):
 if __name__ == "__main__":
     args = docopt(__doc__)
     cfg = dk.load_config()
-    tub = args['--tub320x240']
+    tub = args['--tub320x240_train']
     model = args['--model']
     transfer = args['--transfer']
     model_type = args['--type']

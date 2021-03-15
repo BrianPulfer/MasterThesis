@@ -11,16 +11,16 @@ def get_arguments():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, help="Path to the h5 model to test")
-    parser.add_argument("--tub320x240", type=str, help="Path to the test set / tub320x240")
+    parser.add_argument("--tub320x240_train", type=str, help="Path to the test set / tub320x240_train")
     return dict(vars(parser.parse_args()))
 
 
 def main():
     args = get_arguments()
-    model_path, tub_path = args['model'], args['tub320x240']
+    model_path, tub_path = args['model'], args['tub320x240_train']
 
     if not model_path or not tub_path:
-        raise RuntimeError("Usage: --model <path/to/model> --tub320x240 <path/to/testtub>")
+        raise RuntimeError("Usage: --model <path/to/model> --tub320x240_train <path/to/testtub>")
 
     if not os.path.isfile(model_path):
         raise RuntimeError(model_path + " is not a valid path")

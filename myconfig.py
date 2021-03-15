@@ -233,7 +233,7 @@ RECORD_DURING_AI = True        #normally we do not record during ai mode. Set th
 # #to predict the segement of the course, where the course is divided into NUM_LOCATIONS segments.
 # TRAIN_LOCALIZER = False
 # NUM_LOCATIONS = 10
-# BUTTON_PRESS_NEW_TUB = False #when enabled, makes it easier to divide our data into one tub320x240 per track length if we make a new tub320x240 on each X button press.
+# BUTTON_PRESS_NEW_TUB = False #when enabled, makes it easier to divide our data into one tub320x240_train per track length if we make a new tub320x240_train on each X button press.
 # 
 # #DonkeyGym
 # #Only on Ubuntu linux, you can use the simulator as a virtual donkey and

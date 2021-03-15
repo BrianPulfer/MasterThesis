@@ -15,9 +15,9 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tub1", type=str, help="Path to source tub320x240 1.")
-    parser.add_argument("--tub2", type=str, help="Path to source tub320x240 2.")
-    parser.add_argument("--output", type=str, help="Path to output tub320x240.")
+    parser.add_argument("--tub1", type=str, help="Path to source tub320x240_train 1.")
+    parser.add_argument("--tub2", type=str, help="Path to source tub320x240_train 2.")
+    parser.add_argument("--output", type=str, help="Path to output tub320x240_train.")
     args = dict(vars(parser.parse_args()))
 
     tub1_path = args['tub1']
@@ -28,17 +28,17 @@ def main():
         raise RuntimeError("Usage: --tub1 <path/to/tub1> --tub2 <path/to/tub2> --output <path/to/output>")
 
     if not os.path.isdir(tub1_path) or not os.path.isdir(tub2_path) or not os.path.isdir(tub_new_path):
-        print("One of the specified tub320x240 paths is invalid!")
+        print("One of the specified tub320x240_train paths is invalid!")
     else:
         print("OK! All paths exist.")
 
     # Copying tub1 directory to destination
     copytree(tub1_path, tub_new_path)
 
-    # Highest record number for tub320x240 1
+    # Highest record number for tub320x240_train 1
     max_num_tub1 = max([int(filename.split('_')[0]) for filename in os.listdir(tub1_path) if "cam" in filename])
 
-    # Moving old tub320x240 to new one
+    # Moving old tub320x240_train to new one
     counter = 1
     for filename in sorted(os.listdir(tub2_path)):
         if "cam" not in filename:
