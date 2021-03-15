@@ -388,7 +388,8 @@ def drive(cfg, model_path=None, use_joystick=False, model_type=None, camera_type
 
     if model_path:
         #When we have a model, first create an appropriate Keras part
-        kl = dk.utils.get_model_by_type(model_type, cfg)
+        # kl = dk.utils.get_model_by_type(model_type, cfg)
+        kl = get_model_by_type(model_type, cfg)
 
         model_reload_cb = None
 
