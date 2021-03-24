@@ -22,13 +22,13 @@
 # # Region of interst cropping
 # # only supported in Categorical and Linear models.
 # # If these crops values are too large, they will cause the stride values to become negative and the model with not be valid.
-ROI_CROP_TOP = 44 # int(IMAGE_H * 0.4)                   #the number of rows of pixels to ignore on the top of the image
+ROI_CROP_TOP = 100 # int(IMAGE_H * 0.4)                   #the number of rows of pixels to ignore on the top of the image
 # ROI_CROP_BOTTOM = 0                 #the number of rows of pixels to ignore on the bottom of the image
 #
 # #CAMERA
 CAMERA_TYPE = "CSIC"   # (PICAM|WEBCAM|CVCAM|CSIC|V4L|D435|MOCK|IMAGE_LIST)
-IMAGE_W = 200 # These shapes are used for training (network input size)
-IMAGE_H = 110 # These shapes are used for training (network input size)
+IMAGE_W = 320 # These shapes are used for training (network input size)
+IMAGE_H = 240 # These shapes are used for training (network input size)
 # IMAGE_DEPTH = 3         # default RGB=3, make 1 for mono
 # CAMERA_FRAMERATE = DRIVE_LOOP_HZ
 # CAMERA_VFLIP = False
