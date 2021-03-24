@@ -9,18 +9,19 @@ RAMBO = 'rambo'
 DEFAULT_DONKEY = 'defaultdonkey'
 
 
-def get_own_model(model_name):
+def get_own_model(model_name, input_shape=None):
     model = None
+
     if model_name == DAVE2:
-        model = get_dave2_model()
+        model = get_dave2_model(input_shape)
     elif model_name == CHAUFFEUR:
-        model = get_chaffeur_model()
+        model = get_chaffeur_model(input_shape)
     elif model_name == EPOCH:
-        model = get_epoch_model()
+        model = get_epoch_model(input_shape)
     elif model_name == RAMBO:
-        model = get_rambo_model()
+        model = get_rambo_model(input_shape)
     elif model_name == DEFAULT_DONKEY:
-        model = get_default_donkeycar_model()
+        model = get_default_donkeycar_model(input_shape)
     else:
         return None
 
@@ -44,6 +45,9 @@ def get_own_model(model_name):
 
 
 def get_dave2_model(input_shape=(66, 200, 3)):
+    if not input_shape:
+        input_shape = (66, 200, 3)
+
     img_in = Input(shape=input_shape, name='img_in')
     x = img_in
 
@@ -82,6 +86,9 @@ def get_dave2_model(input_shape=(66, 200, 3)):
 
 def get_chaffeur_model(input_shape=(120, 320, 3)):
     from donkeycar.parts.keras import SpatialDropout2D
+
+    if not input_shape:
+        input_shape = (120, 320, 3)
 
     def get_convolution_kernels(n, kernel_size):
         return Convolution2D(n,
@@ -133,6 +140,9 @@ def get_chaffeur_model(input_shape=(120, 320, 3)):
 
 
 def get_epoch_model(input_shape=(66, 200, 3)):
+    if not input_shape:
+        input_shape = (66, 200, 3)
+
     img_in = Input(shape=input_shape)
     x = img_in
 
@@ -167,11 +177,14 @@ def get_epoch_model(input_shape=(66, 200, 3)):
     return Model(inputs=[img_in], outputs=outputs)
 
 
-def get_rambo_model():
+def get_rambo_model(input_shape=None):
     raise NotImplementedError("Rambo model is not yet implemented")
 
 
 def get_default_donkeycar_model(input_shape=(140, 320, 3)):
+    if not input_shape:
+        input_shape = (140, 320, 3)
+
     drop = 0.1
 
     img_in = Input(shape=input_shape, name='img_in')
