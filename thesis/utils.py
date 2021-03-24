@@ -471,7 +471,7 @@ def get_model_by_type(model_type, cfg):
         if cfg.DONKEY_GYM:
             return get_own_model(model_type)()
         else:
-            return get_own_model(model_type, (320, 140, 3))()
+            return get_own_model(model_type, (140, 320, 3))()
 
     if model_type == "tflite_linear":
         kl = TFLitePilot()
