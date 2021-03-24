@@ -468,7 +468,10 @@ def get_model_by_type(model_type, cfg):
     roi_crop = (cfg.ROI_CROP_TOP, cfg.ROI_CROP_BOTTOM)
 
     if model_type in [DAVE2, CHAUFFEUR, EPOCH, RAMBO, DEFAULT_DONKEY]:
-        return get_own_model(model_type)()
+        if cfg.DONKEY_GYM:
+            return get_own_model(model_type)()
+        else:
+            return get_own_model(model_type, (320, 140, 3))()
 
     if model_type == "tflite_linear":
         kl = TFLitePilot()
