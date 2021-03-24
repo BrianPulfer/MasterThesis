@@ -10,7 +10,7 @@ from tensorflow.python import keras
 TUB_PATH = 'tub'
 CROP = 'crop'
 DEMO = 'demo'
-STORE = 'store'
+STORE_IMAGES = 'store_images'
 
 
 def get_program_arguments():
@@ -18,7 +18,7 @@ def get_program_arguments():
     parser.add_argument("--" + TUB_PATH, type=str, help="Path to the 'real' tub from which XTEs have to be predicted")
     parser.add_argument("--" + CROP, type=int, default=100, help="Number of top pixels to be cropped. Default: 100")
     parser.add_argument("--" + DEMO, type=bool, default=True, help="Whether to play a demo of the predictions or not.")
-    parser.add_argument("--" + STORE, type=bool, default=True, help="Whether to store demo images.")
+    parser.add_argument("--" + STORE_IMAGES, type=bool, default=False, help="Whether to store demo images.")
     args = vars(parser.parse_args())
 
     if not args[TUB_PATH]:
@@ -117,7 +117,7 @@ def main():
 
     # Showing a demo
     if args[DEMO]:
-        show_demo(inputs, predictions, args[STORE])
+        show_demo(inputs, predictions, args[STORE_IMAGES])
 
     # Storing predictions in txt file
     store_predictions(predictions)
