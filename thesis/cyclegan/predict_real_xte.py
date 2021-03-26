@@ -28,29 +28,27 @@ def get_program_arguments():
     return args
 
 
-def get_inputs(path, crop=0, size=(256, 256)):
+def get_inputs(path, crop=100, size=(256, 256)):
     inputs = []
 
-    images_names = [img_name for img_name in list(os.listdir(path)) if 'jpg' in img_name.lower()]
+    images_names = [img_name for img_name in list(os.listdir(path)) if '.jpg' in img_name.lower()]
     images_names = sorted(images_names, key=lambda filename: int(filename.split("_")[0]))
 
     print("\nCollecting {} images from {} ...".format(len(images_names), path))
     for img_name in images_names:
-        if '.jpg' not in img_name.lower():
-            continue
-
         # Reading the image
         img = cv2.imread(os.path.join(path, img_name))
 
-        # Cropping top pixels
-        img = img[crop:, :]
+        if img is not None:
+            # Cropping top pixels
+            img = img[crop:, :]
 
-        # Resizing to be compatible with model's input size
-        img = cv2.resize(img, size)
+            # Resizing to be compatible with model's input size
+            img = cv2.resize(img, size)
 
-        # Appending
-        inputs.append(img)
-    print("Images collected")
+            # Appending
+            inputs.append(img)
+    print("{} images collected.".format(len(inputs)))
     return np.array(inputs)
 
 
