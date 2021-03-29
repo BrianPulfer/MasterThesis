@@ -102,7 +102,7 @@ def main():
 
     # Getting the model
     model = get_model()
-    model.compile(optimizer=Adam(lr=0.0001), loss='mse')
+    model.compile(optimizer=Adam(lr=0.00001), loss='mse')
     history = model.fit(x_train,
               y_train,
               batch_size=16,
@@ -110,7 +110,7 @@ def main():
               validation_data=(x_val, y_val),
               callbacks=[
                   EarlyStopping('val_loss', patience=10),
-                  ModelCheckpoint('../xte_predictor.h5', 'val_loss', save_weights_only=True)
+                  ModelCheckpoint('../xte_predictor_old.h5', 'val_loss', save_weights_only=False)
               ]
               ).history
 
@@ -118,7 +118,7 @@ def main():
     plt.plot(np.arange(len(history['val_loss'])), history['val_loss'], 'g-', label="Validation Loss")
     plt.show()
 
-    model.save("xte_predictor.h5")
+    model.save("xte_predictor_old.h5")
 
 
 if __name__ == '__main__':
