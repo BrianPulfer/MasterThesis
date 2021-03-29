@@ -32,7 +32,11 @@ def get_inputs(path, crop=100, size=(256, 256)):
     inputs = []
 
     images_names = [img_name for img_name in list(os.listdir(path)) if '.jpg' in img_name.lower()]
-    images_names = sorted(images_names, key=lambda filename: int(filename.split("_")[0]))
+
+    try:
+        images_names = sorted(images_names, key=lambda filename: int(filename.split("_")[0]))
+    except ValueError:
+        images_names = sorted(images_names, key=lambda filename: int(filename.split('_')[1].split('.jpg')[0]))
 
     print("\nCollecting {} images from {} ...".format(len(images_names), path))
     for img_name in images_names:
@@ -77,7 +81,10 @@ def show_demo(images, predicted_xtes, store, delay=100):
         print("Predictions will be stored under ", store_path)
 
     for img, xte in zip(images, predicted_xtes):
-        cv2.putText(img, "XTE: " + str(xte[0]),
+        if hasattr(xte, '__len__'):
+            xte = xte[0]
+
+        cv2.putText(img, "XTE: " + str(xte),
                     (64, 32),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
