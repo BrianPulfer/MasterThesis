@@ -95,7 +95,7 @@ def main():
     # Collecting training set
     X, Y = get_data(args[DATA_DIR])
 
-    percentage = 0.8
+    percentage = 0.95
     split = int(percentage * len(X))
     x_train, y_train = X[:split], Y[:split]
     x_val, y_val = X[split:], Y[split:]
