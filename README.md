@@ -8,7 +8,7 @@ To modify the simulator (optional): Unity 2019.3.0f1
 
 ## 2 - Set-up
 ### 2.1 - Git LFS
-To access the pre-trained keras models (.h5 files), you will need to use [git lfs](https://git-lfs.github.com/). <br/><br/>
+To access the pre-trained keras models (.h5 files) and datasets, you will need to use [git lfs](https://git-lfs.github.com/). <br/><br/>
 
 ### 2.2 - Donkey Car
 Make sure you correctly install the [donkey car software](http://docs.donkeycar.com/guide/install_software/), the necessary [simulator software](http://docs.donkeycar.com/guide/simulator/) and [my personal version of the simulator executable](https://github.com/BrianPulfer/sdsandbox/tree/master/binaries/usi_track_v2/) (<b>MacOS</b> only for the moment).
