@@ -110,7 +110,7 @@ def main():
               validation_data=(x_val, y_val),
               callbacks=[
                   EarlyStopping('val_loss', patience=10),
-                  ModelCheckpoint('../xte_predictor.h5', 'val_loss', save_weights_only=False)
+                  ModelCheckpoint('../xte_predictor.h5py', 'val_loss', save_best_only=True, save_weights_only=False)
               ]
               ).history
 
