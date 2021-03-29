@@ -27,7 +27,7 @@ def parse_arguments():
 
     for prog_arg in PROGRAM_ARGUMENTS:
         if not args[prog_arg]:
-            print("Usage: python train_sim2real_translator.py --data_dir <DIR>")
+            print("Usage: python train_xte_predictor.py --data_dir <DIR>")
             exit()
 
     return args
