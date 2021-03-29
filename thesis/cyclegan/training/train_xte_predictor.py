@@ -110,15 +110,13 @@ def main():
               validation_data=(x_val, y_val),
               callbacks=[
                   EarlyStopping('val_loss', patience=10),
-                  ModelCheckpoint('../xte_predictor_old.h5', 'val_loss', save_weights_only=False)
+                  ModelCheckpoint('../xte_predictor.h5', 'val_loss', save_weights_only=False)
               ]
               ).history
 
     plt.plot(np.arange(len(history['loss'])), history['loss'], 'r-', label="Train Loss")
     plt.plot(np.arange(len(history['val_loss'])), history['val_loss'], 'g-', label="Validation Loss")
     plt.show()
-
-    model.save("xte_predictor_old.h5")
 
 
 if __name__ == '__main__':
