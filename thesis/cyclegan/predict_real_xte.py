@@ -10,6 +10,7 @@ from tensorflow.python import keras
 TUB_PATH = 'tub'
 CROP = 'crop'
 DEMO = 'demo'
+STORE_PREDICTIONS = 'store_predictions'
 STORE_IMAGES = 'store_images'
 
 
@@ -17,7 +18,9 @@ def get_program_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("--" + TUB_PATH, type=str, help="Path to the 'real' tub from which XTEs have to be predicted")
     parser.add_argument("--" + CROP, type=int, default=100, help="Number of top pixels to be cropped. Default: 100")
-    parser.add_argument("--" + DEMO, type=bool, default=True, help="Whether to play a demo of the predictions or not.")
+    parser.add_argument("--" + DEMO, type=bool, default=False, help="Whether to play a demo of the predictions or not.")
+    parser.add_argument("--" + STORE_PREDICTIONS, type=bool, default=True,
+                        help="Whether to store XTE-predictor's predictions")
     parser.add_argument("--" + STORE_IMAGES, type=bool, default=False, help="Whether to store demo images.")
     args = vars(parser.parse_args())
 
@@ -101,7 +104,7 @@ def show_demo(images, predicted_xtes, store, delay=100):
 
 
 def store_predictions(predictions):
-    file = open("predictions.txt")
+    file = open("predictions.txt", 'w')
     for p in predictions:
         file.write(str(p[0]) + "\n")
     file.close()
@@ -110,6 +113,7 @@ def store_predictions(predictions):
 def main():
     # Getting the program arguments
     args = get_program_arguments()
+    print(args)
 
     # Getting the model
     xte_predictor = get_model()
@@ -121,11 +125,20 @@ def main():
     predictions = get_predictions(xte_predictor, inputs)
 
     # Showing a demo
-    if args[DEMO]:
+    if args[DEMO] is True:
         show_demo(inputs, predictions, args[STORE_IMAGES])
 
     # Storing predictions in txt file
-    store_predictions(predictions)
+    if args[STORE_PREDICTIONS] is True:
+        store_predictions(predictions)
+
+    print(
+        "Mean absolute cross-track error: {}\n"
+        "Maximum absolute cross-track error: {}".format(
+            np.mean(abs(predictions)),
+            np.max(abs(predictions))
+        )
+    )
 
 
 if __name__ == '__main__':
