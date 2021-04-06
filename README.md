@@ -27,5 +27,21 @@ Also add the /thesis folder you find in this repository in your /mycar/ folder.<
 <br/>
 Finally, change the path of the simulator `DONKEY_SIM_PATH` in the myconfig.py file with the path to my own version of the simulator. Optionally, modify personal information like the car name and others.
 
-## 3 - Credits
+
+## 3 - XTE Predictor for real world
+Data collection for a XTE predictor is found under [thesis/cyclegan/training/xte_predictor_dataset](https://github.com/BrianPulfer/MasterThesis/tree/main/thesis/cyclegan/training/xte_predictor_dataset). Alternatively, data can be collected by:
+<ol>
+    <li>Launching the Simulator.</li>
+    <li>Selecting a log directory by clicking the 'log dir' button</li>
+    <li>Selecting a preferred resolution (default is 320x240)</li>
+    <li>Launching the USI Track scene and drive the car with the 'Joystick/Keyboard w Rec' button</li>
+    <li>Driving the car</li>
+</ol>
+
+This will generate a dataset of simulated images and respective XTEs (labels). The simulated images have then to be converted using a CycleGAN network trained to do sim-2-real translation. 
+For this, use the [CycleGAN_for_sim2real_translation.ipynb](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/CycleGAN_for_sim2real_translation.ipynb) notebook. <br/>
+<br/>
+Once the dataset is collected, use the [train_xte_predictor.py](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/train_xte_predictor.py) notebook to train the xte predictor.
+
+## 4 - Credits
 Credits to [Tawn Kramer](https://github.com/tawnkramer) and [DonkeyCar community](https://www.donkeycar.com/community.html) for providing the framework.
