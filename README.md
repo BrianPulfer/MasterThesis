@@ -38,10 +38,14 @@ Data collection for a XTE predictor is found under [thesis/cyclegan/training/xte
     <li>Driving the car</li>
 </ol>
 
+
 This will generate a dataset of simulated images and respective XTEs (labels). The simulated images have then to be converted using a CycleGAN network trained to do sim-2-real translation. 
-For this, use the [CycleGAN_for_sim2real_translation.ipynb](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/CycleGAN_for_sim2real_translation.ipynb) notebook. <br/>
+For this, use the [CycleGAN_for_sim2real_translation.ipynb](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/CycleGAN_for_sim2real_translation.ipynb) notebook.
+![Sim2Real Translation](thesis/images/sim2real_cyclegan.gif)
 <br/>
-Once the dataset is collected, use the [train_xte_predictor.py](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/train_xte_predictor.py) notebook to train the xte predictor.
+<br/>
+Once the dataset of converted images and XTEs is collected, use the [train_xte_predictor.py](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/train_xte_predictor.py) notebook to train the xte predictor.<br/>
+![xte predictor](thesis/images/xte_predictor.gif)
 
 ## 4 - Credits
 Credits to [Tawn Kramer](https://github.com/tawnkramer) and [DonkeyCar community](https://www.donkeycar.com/community.html) for providing the framework.
