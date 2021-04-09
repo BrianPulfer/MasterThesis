@@ -68,9 +68,9 @@ def get_model():
 
 
 def get_predictions(xte_predictor, inputs):
-    print("\nGetting predictions from the model...")
+    print("\nGetting predictions from the XTE-Predictor model...")
     predictions = xte_predictor.predict(inputs)
-    print("Predictions computed")
+    print("XTE Predictions computed")
     return predictions
 
 
