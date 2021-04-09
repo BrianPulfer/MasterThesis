@@ -38,6 +38,8 @@ def get_xtes(args):
 def get_tub_infos(tub_path):
     steers, throttles = [], []
 
+    user = None
+
     for filename in os.listdir(tub_path):
         if '.json' not in filename.lower():
             continue
@@ -47,8 +49,11 @@ def get_tub_infos(tub_path):
 
         record = json.load(open(os.path.join(tub_path, filename)))
 
-        steer = record['user/angle']
-        throttle = record['user/throttle']
+        if user is None:
+            user = record['user/angle'] != 0.0 or record['user/throttle'] != 0.0
+
+        steer = record['user/angle'] if user else record['pilot/angle']
+        throttle = record['user/throttle'] if user else record['pilot/throttle']
 
         steers.append(steer)
         throttles.append(throttle)
