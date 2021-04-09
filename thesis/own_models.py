@@ -44,6 +44,13 @@ def get_own_model(model_name, input_shape=None):
     return OwnModel
 
 
+def get_output_layers(x, activation_steer='linear', activation_throttle='linear'):
+    return [
+        Dense(1, activation=activation_steer, name='n_outputs0')(x),
+        Dense(1, activation=activation_throttle, name='n_outputs1')(x)
+    ]
+
+
 def get_dave2_model(input_shape=(66, 200, 3)):
     if not input_shape:
         input_shape = (66, 200, 3)
@@ -72,14 +79,8 @@ def get_dave2_model(input_shape=(66, 200, 3)):
     x = Dense(50, name='fc2', activation='elu')(x)
     x = Dense(10, name='fc3', activation='elu')(x)
 
-    # Output layer with tanh activation
-    outputs = [
-        Dense(1, activation='tanh', name='n_outputs0')(x),
-        Dense(1, activation='sigmoid', name='n_outputs1')(x),
-    ]
-
-    #for i in range(2):
-    #    outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
+    # Output layer
+    outputs = get_output_layers(x)
 
     return Model(inputs=[img_in], outputs=outputs)
 
@@ -128,12 +129,9 @@ def get_chaffeur_model(input_shape=(120, 320, 3)):
     x = Dropout(0.5)(x)
 
     # Classification
-    outputs = [
-        Dense(1, activation='tanh', name='n_outputs0')(x),
-        Dense(1, activation='sigmoid', name='n_outputs1')(x),
-    ]
+    outputs = get_output_layers(x)
 
-    #for i in range(2):
+    # for i in range(2):
     #    outputs.append(Dense(1, name='n_outputs' + str(i), kernel_initializer='he_normal')(x))
 
     return Model(inputs=[img_in], outputs=outputs)
@@ -166,10 +164,7 @@ def get_epoch_model(input_shape=(66, 200, 3)):
     x = Dense(1024, activation='relu')(x)
     x = Dropout(.5)(x)
 
-    outputs = [
-        Dense(1, activation='tanh', name='n_outputs0')(x),
-        Dense(1, activation='sigmoid', name='n_outputs1')(x),
-    ]
+    outputs = get_output_layers(x)
 
     # for i in range(2):
     #    outputs.append(Dense(1, name='n_outputs' + str(i))(x))
@@ -206,10 +201,7 @@ def get_default_donkeycar_model(input_shape=(140, 320, 3)):
     x = Dense(50, activation='relu')(x)
     x = Dropout(drop)(x)
 
-    outputs = [
-        Dense(1, activation='tanh', name='n_outputs0')(x),
-        Dense(1, activation='sigmoid', name='n_outputs1')(x),
-    ]
+    outputs = get_output_layers(x)
 
     # for i in range(2):
     #   outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
