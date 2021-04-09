@@ -33,7 +33,7 @@ def scale(im, size=128):
     accepts: PIL image, size of square sides
     returns: PIL image scaled so sides lenght = size
     '''
-    size = (size,size)
+    size = (size, size)
     im.thumbnail(size, Image.ANTIALIAS)
     return im
 
@@ -119,11 +119,10 @@ def rgb2gray(rgb):
     '''
     take a numpy rgb image return a new single channel image converted to greyscale
     '''
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
+    return np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
 
 
 def img_crop(img_arr, top, bottom):
-
     if bottom is 0:
         end = img_arr.shape[0]
     else:
@@ -190,7 +189,7 @@ def zip_dir(dir_path, zip_path):
     """
     Create and save a zipfile of a one level directory
     """
-    file_paths = glob.glob(dir_path + "/*") #create path to search for files.
+    file_paths = glob.glob(dir_path + "/*")  # create path to search for files.
 
     zf = zipfile.ZipFile(zip_path, 'w')
     dir_name = os.path.basename(dir_path)
@@ -199,7 +198,6 @@ def zip_dir(dir_path, zip_path):
         zf.write(p, arcname=os.path.join(dir_name, file_name))
     zf.close()
     return zip_path
-
 
 
 '''
@@ -223,7 +221,7 @@ def linear_bin(a, N=15, offset=1, R=2.0):
     offset one hot bin by offset, commonly R/2
     '''
     a = a + offset
-    b = round(a / (R/(N-offset)))
+    b = round(a / (R / (N - offset)))
     arr = np.zeros(N)
     b = clamp(b, 0, N - 1)
     arr[int(b)] = 1
@@ -237,7 +235,7 @@ def linear_unbin(arr, N=15, offset=-1, R=2.0):
     rescale given R range and offset
     '''
     b = np.argmax(arr)
-    a = b *(R/(N + offset)) + offset
+    a = b * (R / (N + offset)) + offset
     return a
 
 
@@ -247,9 +245,9 @@ def map_range(x, X_min, X_max, Y_min, Y_max):
     '''
     X_range = X_max - X_min
     Y_range = Y_max - Y_min
-    XY_ratio = X_range/Y_range
+    XY_ratio = X_range / Y_range
 
-    y = ((x-X_min) / XY_ratio + Y_min) // 1
+    y = ((x - X_min) / XY_ratio + Y_min) // 1
 
     return int(y)
 
@@ -260,13 +258,14 @@ def map_range_float(x, X_min, X_max, Y_min, Y_max):
     '''
     X_range = X_max - X_min
     Y_range = Y_max - Y_min
-    XY_ratio = X_range/Y_range
+    XY_ratio = X_range / Y_range
 
-    y = ((x-X_min) / XY_ratio + Y_min)
+    y = ((x - X_min) / XY_ratio + Y_min)
 
     # print("y= {}".format(y))
 
-    return round(y,2)
+    return round(y, 2)
+
 
 '''
 ANGLES
@@ -287,6 +286,7 @@ DEG_TO_RAD = math.pi / 180.0
 def deg2rad(theta):
     return theta * DEG_TO_RAD
 
+
 '''
 VECTORS
 '''
@@ -300,6 +300,7 @@ def dist(x1, y1, x2, y2):
 NETWORKING
 '''
 
+
 def my_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(('192.0.0.8', 1027))
@@ -310,15 +311,16 @@ def my_ip():
 OTHER
 '''
 
+
 def map_frange(x, X_min, X_max, Y_min, Y_max):
     '''
     Linear mapping between two ranges of values
     '''
     X_range = X_max - X_min
     Y_range = Y_max - Y_min
-    XY_ratio = X_range/Y_range
+    XY_ratio = X_range / Y_range
 
-    y = ((x-X_min) / XY_ratio + Y_min)
+    y = ((x - X_min) / XY_ratio + Y_min)
 
     return y
 
@@ -330,14 +332,13 @@ def merge_two_dicts(x, y):
     return z
 
 
-
 def param_gen(params):
     '''
     Accepts a dictionary of parameter options and returns
     a list of dictionary with the permutations of the parameters.
     '''
     for p in itertools.product(*params.values()):
-        yield dict(zip(params.keys(), p ))
+        yield dict(zip(params.keys(), p))
 
 
 def run_shell_command(cmd, cwd=None, timeout=15):
@@ -356,7 +357,6 @@ def run_shell_command(cmd, cwd=None, timeout=15):
     for line in proc.stderr.readlines():
         err.append(line)
     return out, err, proc.pid
-
 
 
 def kill(proc_id):
@@ -421,9 +421,11 @@ def gather_tubs(cfg, tub_names):
 
     return tubs
 
+
 """
 Training helpers
 """
+
 
 def get_image_index(fnm):
     sl = os.path.basename(fnm).split('_')
@@ -436,7 +438,6 @@ def get_record_index(fnm):
 
 
 def gather_records(cfg, tub_names, opts=None, verbose=False):
-
     tubs = gather_tubs(cfg, tub_names)
 
     records = []
@@ -468,16 +469,13 @@ def get_model_by_type(model_type, cfg):
     roi_crop = (cfg.ROI_CROP_TOP, cfg.ROI_CROP_BOTTOM)
 
     if model_type in [DAVE2, CHAUFFEUR, EPOCH, RAMBO, DEFAULT_DONKEY]:
-        if cfg.DONKEY_GYM:
-            return get_own_model(model_type)()
-        else:
-            # return get_own_model(model_type, (140, 320, 3))()
-            input_size = (
-                int(input_shape[0] - roi_crop[0] - roi_crop[1]),
-                int(input_shape[1]),
-                int(input_shape[2])
-            )
-            return get_own_model(model_type, input_size)
+        # return get_own_model(model_type, (140, 320, 3))()
+        input_size = (
+            int(input_shape[0] - roi_crop[0] - roi_crop[1]),
+            int(input_shape[1]),
+            int(input_shape[2])
+        )
+        return get_own_model(model_type, input_size)()
 
     if model_type == "tflite_linear":
         kl = TFLitePilot()
@@ -498,11 +496,14 @@ def get_model_by_type(model_type, cfg):
         from donkeycar.parts.coral import CoralLinearPilot
         kl = CoralLinearPilot()
     elif model_type == "3d":
-        kl = Keras3D_CNN(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH, seq_length=cfg.SEQUENCE_LENGTH, roi_crop=roi_crop)
+        kl = Keras3D_CNN(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH,
+                         seq_length=cfg.SEQUENCE_LENGTH, roi_crop=roi_crop)
     elif model_type == "rnn":
-        kl = KerasRNN_LSTM(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH, seq_length=cfg.SEQUENCE_LENGTH, roi_crop=roi_crop)
+        kl = KerasRNN_LSTM(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH,
+                           seq_length=cfg.SEQUENCE_LENGTH, roi_crop=roi_crop)
     elif model_type == "categorical":
-        kl = KerasCategorical(input_shape=input_shape, throttle_range=cfg.MODEL_CATEGORICAL_MAX_THROTTLE_RANGE, roi_crop=roi_crop)
+        kl = KerasCategorical(input_shape=input_shape, throttle_range=cfg.MODEL_CATEGORICAL_MAX_THROTTLE_RANGE,
+                              roi_crop=roi_crop)
     elif model_type == "latent":
         kl = KerasLatent(input_shape=input_shape)
     elif model_type == "fastai":
@@ -519,7 +520,7 @@ def get_test_img(model):
     query the input to see what it likes
     make an image capable of using with that test model
     '''
-    assert(len(model.inputs) > 0)
+    assert (len(model.inputs) > 0)
     try:
         count, h, w, ch = model.inputs[0].get_shape()
         seq_len = 0
