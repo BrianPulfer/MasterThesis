@@ -29,7 +29,7 @@ Finally, change the path of the simulator `DONKEY_SIM_PATH` in the myconfig.py f
 
 
 ## 3 - XTE Predictor for real world
-Data collection for a XTE predictor is found under [thesis/cyclegan/training/xte_predictor_dataset](https://github.com/BrianPulfer/MasterThesis/tree/main/thesis/cyclegan/training/xte_predictor_dataset). Alternatively, data can be collected by:
+Data collection for a XTE predictor is found under [thesis/xte_predictor/training/xte_predictor_trainset](https://github.com/BrianPulfer/MasterThesis/tree/main/thesis/xte_predictor/training/xte_predictor_trainset). Alternatively, data can be collected by:
 <ol>
     <li>Launching the Simulator.</li>
     <li>Selecting a log directory by clicking the 'log dir' button</li>
@@ -40,11 +40,11 @@ Data collection for a XTE predictor is found under [thesis/cyclegan/training/xte
 
 
 This will generate a dataset of simulated images and respective XTEs (labels). The simulated images have then to be converted using a CycleGAN network trained to do sim-2-real translation. 
-For this, use the [CycleGAN_for_sim2real_translation.ipynb](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/CycleGAN_for_sim2real_translation.ipynb) notebook.
+For this, use the [CycleGAN_for_sim2real_translation.ipynb](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/xte_predictor/training/CycleGAN_for_sim2real_translation.ipynb) notebook.
 ![Sim2Real Translation](thesis/images/sim2real_cyclegan.gif)
 <br/>
 <br/>
-Once the dataset of converted images and XTEs is collected, use the [train_xte_predictor.py](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/cyclegan/training/train_xte_predictor.py) notebook to train the xte predictor.<br/>
+Once the dataset of converted images and XTEs is collected, use the [train_xte_predictor.py](https://github.com/BrianPulfer/MasterThesis/blob/main/thesis/xte_predictor/training/train_xte_predictor.py) notebook to train the xte predictor.<br/>
 ![xte predictor](thesis/images/xte_predictor.gif)
 
 ## 4 - Credits
