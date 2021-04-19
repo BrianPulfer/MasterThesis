@@ -172,6 +172,41 @@ def get_epoch_model(input_shape=(66, 200, 3)):
     return Model(inputs=[img_in], outputs=outputs)
 
 
+def get_small_epoch_model(input_shape=(66, 200, 3)):
+    if not input_shape:
+        input_shape = (66, 200, 3)
+
+    img_in = Input(shape=input_shape)
+    x = img_in
+
+    # Normalization
+    # x = Lambda(lambda x: x / 127.5 - 1.0)(x)
+    # x = Lambda(lambda x: x * 255 / 127.5 - 1.0)(x)
+
+    x = Convolution2D(16, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.25)(x)
+
+    x = Convolution2D(32, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.25)(x)
+
+    x = Convolution2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2))(x)
+    x = Dropout(0.5)(x)
+
+    x = Flatten()(x)
+    x = Dense(512, activation='relu')(x)
+    x = Dropout(.5)(x)
+
+    outputs = get_output_layers(x)
+
+    # for i in range(2):
+    #    outputs.append(Dense(1, name='n_outputs' + str(i))(x))
+
+    return Model(inputs=[img_in], outputs=outputs)
+
+
 def get_rambo_model(input_shape=None):
     raise NotImplementedError("Rambo model is not yet implemented")
 
