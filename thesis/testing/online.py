@@ -3,7 +3,7 @@ import json
 import argparse
 import numpy as np
 
-from thesis.cyclegan.predict_real_xte import get_model, get_inputs, get_predictions
+from thesis.xte_predictor.predict_real_xte import get_model, get_inputs, get_predictions
 
 # Definitions
 TUB = 'tub'
@@ -78,12 +78,12 @@ def main():
         "Steering std: {}\n"
         "Throttle avg: {}\n"
         "Throttle std: {}\n".format(
-            np.mean(abs(xtes)),
-            np.max(abs(xtes)),
-            np.mean(abs(steers)),
-            np.std(abs(steers)),
-            np.mean(abs(throttles)),
-            np.std(abs(throttles))
+            np.mean(np.abs(xtes)),
+            np.max(np.abs(xtes)),
+            np.mean(np.abs(steers)),
+            np.std(np.abs(steers)),
+            np.mean(np.abs(throttles)),
+            np.std(np.abs(throttles))
         )
     )
 
