@@ -242,3 +242,13 @@ def get_default_donkeycar_model(input_shape=(140, 320, 3)):
     #   outputs.append(Dense(1, activation='linear', name='n_outputs' + str(i))(x))
 
     return Model(inputs=[img_in], outputs=outputs)
+
+
+if __name__ == '__main__':
+    in_size = (240-100, 320, 3)
+    model_names = [DAVE2, CHAUFFEUR, DEFAULT_DONKEY, EPOCH]
+    models = [get_own_model(model_name, in_size)().model for model_name in model_names]
+
+    print(f"Number of model parameters for input of size of {in_size}:\n")
+    for model, name in zip(models, model_names):
+        print(f"{name} has {model.count_params()} parameters")
