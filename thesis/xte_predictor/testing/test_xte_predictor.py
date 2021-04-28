@@ -69,7 +69,7 @@ def plot_absolute_errors_barchart(errors):
 
     fig, ax = plt.subplots()
     x = np.arange(len(bins)) * bin_size
-    rects1 = ax.bar(x, bins, 0.03, label='Absolute Error')
+    ax.bar(x, bins, 0.03, label='Absolute Error')
 
     ax.set_ylabel('Cardinality')
     ax.set_xlabel("|Error|")
