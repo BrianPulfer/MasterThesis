@@ -17,7 +17,7 @@ def get_own_model(model_name, input_shape=None):
     elif model_name == CHAUFFEUR:
         model = get_chaffeur_model(input_shape)
     elif model_name == EPOCH:
-        model = get_epoch_model(input_shape)
+        model = get_small_epoch_model(input_shape)
     elif model_name == RAMBO:
         model = get_rambo_model(input_shape)
     elif model_name == DEFAULT_DONKEY:
@@ -61,7 +61,7 @@ def get_dave2_model(input_shape=(66, 200, 3)):
     # Normalization is carried out in donkey car train data generator
     # x = Lambda(lambda x: x / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
     x = Lambda(lambda x: x * 255 / 127.5 - 1., input_shape=input_shape, name='lambda_norm')(x)
-
+    (66, 220)
     # 5x5 Convolutional layers with stride of 2x2
     x = Convolution2D(24, (5, 5), strides=(2, 2), name='conv1', activation='elu')(x)
     x = Convolution2D(36, (5, 5), strides=(2, 2), name='conv2', activation='elu')(x)
