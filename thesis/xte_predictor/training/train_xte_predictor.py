@@ -9,8 +9,6 @@ import matplotlib.pyplot as plt
 from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.callbacks import EarlyStopping, ModelCheckpoint
 
-from thesis.own_models import get_default_donkeycar_model
-
 # DEFINITIONS
 DATA_DIR = 'data_dir'
 USE_FAKE = 'use_fake'
