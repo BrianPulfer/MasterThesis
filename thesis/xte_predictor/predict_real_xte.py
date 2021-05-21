@@ -7,6 +7,7 @@ import numpy as np
 from tensorflow.python import keras
 
 # Definitions
+XTE_PREDICTOR_PATH = 'predictor'
 TUB_PATH = 'tub'
 CROP = 'crop'
 DEMO = 'demo'
@@ -16,11 +17,14 @@ STORE_IMAGES = 'store_images'
 
 def get_program_arguments():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--" + XTE_PREDICTOR_PATH, type=str,
+                        default=os.path.join(pathlib.Path(__file__).parent.absolute(), 'xte_predictor_a.h5'),
+                        help="Path to the XTE predictor .h5 file")
     parser.add_argument("--" + TUB_PATH, type=str, help="Path to the 'real' tub from which XTEs have to be predicted")
     parser.add_argument("--" + CROP, type=int, default=100, help="Number of top pixels to be cropped. Default: 100")
     parser.add_argument("--" + DEMO, type=bool, default=False, help="Whether to play a demo of the predictions or not.")
     parser.add_argument("--" + STORE_PREDICTIONS, type=bool, default=True,
-                        help="Whether to store XTE-predictor's predictions")
+                        help="Whether to store XTE-predictor's predictions in a txt file")
     parser.add_argument("--" + STORE_IMAGES, type=bool, default=False, help="Whether to store demo images.")
     args = vars(parser.parse_args())
 
@@ -59,8 +63,7 @@ def get_inputs(path, crop=100, size=(256, 256)):
     return np.array(inputs)
 
 
-def get_model():
-    model_path = os.path.join(pathlib.Path(__file__).parent.absolute(), 'xte_predictor.h5')
+def get_model(model_path):
     print("\nLoading model from {} ...".format(model_path))
     model = keras.models.load_model(model_path)
     print("Model loaded.")
@@ -116,7 +119,7 @@ def main():
     print(args)
 
     # Getting the model
-    xte_predictor = get_model()
+    xte_predictor = get_model(args[XTE_PREDICTOR_PATH])
 
     # Getting inputs
     inputs = get_inputs(args[TUB_PATH], crop=args[CROP])
