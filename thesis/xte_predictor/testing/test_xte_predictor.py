@@ -20,7 +20,7 @@ def get_arguments():
 
     parser.add_argument('--' + MODEL, type=str, default=os.path.join(pathlib.Path(__file__).parent.parent.absolute(), 'xte_predictor_a.h5'), help='Path to the model')
     parser.add_argument('--' + PREDICTOR_B, action='store_true', help="Whether the predictor takes real images_real or pseudo-sim images_real")
-    parser.add_argument('--' + SHOW_PREDICTIONS, type=bool, default=False, help='Path to the model')
+    parser.add_argument('--' + SHOW_PREDICTIONS, action='store_true', help='Path to the model')
 
     args = vars(parser.parse_args())
 
@@ -68,7 +68,7 @@ def show_predictions(X, Y, y_hat):
                     (255, 255, 255),
                     2)
         cv2.imshow("XTE: " + str(xte), img)
-        cv2.waitKey(200)
+        cv2.waitKey(100)
     cv2.waitKey()
 
 
