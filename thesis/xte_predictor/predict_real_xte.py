@@ -25,7 +25,7 @@ def get_program_arguments():
     parser.add_argument("--" + DEMO, type=bool, default=False, help="Whether to play a demo of the predictions or not.")
     parser.add_argument("--" + STORE_PREDICTIONS, type=bool, default=True,
                         help="Whether to store XTE-predictor's predictions in a txt file")
-    parser.add_argument("--" + STORE_IMAGES, type=bool, default=False, help="Whether to store demo images.")
+    parser.add_argument("--" + STORE_IMAGES, type=bool, default=False, help="Whether to store demo images_real.")
     args = vars(parser.parse_args())
 
     if not args[TUB_PATH]:
@@ -45,7 +45,7 @@ def get_inputs(path, crop=100, size=(256, 256)):
     except ValueError:
         images_names = sorted(images_names, key=lambda filename: int(filename.split('_')[1].split('.jpg')[0]))
 
-    print("\nCollecting {} images from {} ...".format(len(images_names), path))
+    print("\nCollecting {} images_real from {} ...".format(len(images_names), path))
     for img_name in images_names:
         # Reading the image
         img = cv2.imread(os.path.join(path, img_name))
@@ -59,7 +59,7 @@ def get_inputs(path, crop=100, size=(256, 256)):
 
             # Appending
             inputs.append(img)
-    print("{} images collected.".format(len(inputs)))
+    print("{} images_real collected.".format(len(inputs)))
     return np.array(inputs)
 
 

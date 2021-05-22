@@ -21,21 +21,21 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--" + DATA_DIR, type=str, help="Path to the directory containing the dataset")
-    parser.add_argument("--" + USE_FAKE, type=bool,
-                        help="Whether to use the '_fake.png' images or the '_real.png' images. Default uses fakes.")
+    parser.add_argument("--" + USE_FAKE, type=bool, default=True,
+                        help="Whether to use the '_fake.png' images_real or the '_real.png' images_real. Default uses fakes.")
 
     args = vars(parser.parse_args())
 
     for prog_arg in PROGRAM_ARGUMENTS:
         if not args[prog_arg]:
-            print("Usage: python train_xte_predictor.py --data_dir <DIR>")
+            print(f"Usage: python train_xte_predictor.py --{DATA_DIR} <DIR> --{USE_FAKE} <Boolean>")
             exit()
 
     return args
 
 
 def get_data(path, use_fake=True, shuffle=True):
-    """Given the folder path, loads images from the /images/ sub-folder and labels (XTE) from the 'Frames' file."""
+    """Given the folder path, loads images_real from the /images_real/ sub-folder and labels (XTE) from the 'Frames' file."""
 
     # Loading all labels
     frames = pd.read_csv(os.path.join(path, "driving_log.csv"), sep=',')
@@ -45,7 +45,7 @@ def get_data(path, use_fake=True, shuffle=True):
     images = []
     for filename in filenames:
         filename = filename.split("/")[-1].split(".jpg")[0]
-        image_path = os.path.join(path, 'images/', filename + "_fake.png" if use_fake else filename + "_real.png")
+        image_path = os.path.join(path, 'images_real/', filename + "_fake.png" if use_fake else filename + "_real.png")
         images.append(cv2.imread(image_path))
 
     if shuffle:
@@ -111,7 +111,7 @@ def main():
                         validation_data=(x_val, y_val),
                         callbacks=[
                             EarlyStopping('val_loss', patience=10),
-                            ModelCheckpoint('../xte_predictor_a.h5', 'val_loss', save_best_only=True,
+                            ModelCheckpoint('../xte_predictor.h5', 'val_loss', save_best_only=True,
                                             save_weights_only=False)
                         ]
                         ).history

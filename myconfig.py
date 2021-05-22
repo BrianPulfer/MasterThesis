@@ -110,7 +110,7 @@ OPTIMIZER = "adam"                #adam, sgd, rmsprop, etc.. None accepts defaul
 LEARNING_RATE = 0.0001            #only used when OPTIMIZER specified
 # LEARNING_RATE_DECAY = 0.0       #only used when OPTIMIZER specified
 # SEND_BEST_MODEL_TO_PI = False   #change to true to automatically send best model during training
-# CACHE_IMAGES = True             #keep images in memory. will speed succesive epochs, but crater if not enough mem.
+# CACHE_IMAGES = True             #keep images_real in memory. will speed succesive epochs, but crater if not enough mem.
 # 
 # PRUNE_CNN = False               #This will remove weights from your model. The primary goal is to increase performance.
 # PRUNE_PERCENT_TARGET = 75       # The desired percentage of pruning.
@@ -155,7 +155,7 @@ LEARNING_RATE = 0.0001            #only used when OPTIMIZER specified
 # MODEL_CATEGORICAL_MAX_THROTTLE_RANGE = 0.5
 # 
 # #RNN or 3D
-# SEQUENCE_LENGTH = 3             #some models use a number of images over time. This controls how many.
+# SEQUENCE_LENGTH = 3             #some models use a number of images_real over time. This controls how many.
 # 
 # #IMU
 # HAVE_IMU = False                #when true, this add a Mpu6050 part and records the data. Can be used with a

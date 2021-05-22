@@ -698,11 +698,11 @@ def sequence_train(cfg, tub_names, model_name, transfer_model, model_type, conti
     '''
     use the specified data in tub_names to train an artifical neural network
     saves the output trained model as model_name
-    trains models which take sequence of images
+    trains models which take sequence of images_real
     '''
     assert(not continuous)
 
-    print("sequence of images training")    
+    print("sequence of images_real training")
 
     kl = dk.utils.get_model_by_type(model_type=model_type, cfg=cfg)
     
@@ -938,7 +938,7 @@ def extract_data_from_pickles(cfg, tubs):
     t_paths = gather_tub_paths(cfg, tubs)
     for tub_path in t_paths:
         file_paths = glob.glob(join(tub_path, '*.pickle'))
-        print('found {} pickles writing json records and images in tub320x240_train {}'.format(len(file_paths), tub_path))
+        print('found {} pickles writing json records and images_real in tub320x240_train {}'.format(len(file_paths), tub_path))
         for file_path in file_paths:
             # print('loading data from {}'.format(file_paths))
             with open(file_path, 'rb') as f:

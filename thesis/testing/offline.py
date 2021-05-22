@@ -43,7 +43,7 @@ def load_model_and_check_sizes(model_path, tub_path, crop_top):
     first_image = Image.open(os.path.join(tub_path, images_names[0]))
 
     w, h = (first_image.size[0], first_image.size[1])
-    print("Detected images size: ", first_image.size)
+    print("Detected images_real size: ", first_image.size)
     print("Image size after top crop: ", (w, h - crop_top))
     print("Detected model input size: ", input_size)
 

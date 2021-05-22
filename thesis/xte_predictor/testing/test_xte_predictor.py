@@ -1,6 +1,8 @@
 import os
 import cv2
 
+import pathlib
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,6 +10,7 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 
 MODEL = 'model'
+PREDICTOR_B = 'predictor_b'
 SHOW_PREDICTIONS = 'show_predictions'
 
 
@@ -15,7 +18,8 @@ def get_arguments():
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--' + MODEL, type=str, help='Path to the model')
+    parser.add_argument('--' + MODEL, type=str, default=os.path.join(pathlib.Path(__file__).parent.parent.absolute(), 'xte_predictor_a.h5'), help='Path to the model')
+    parser.add_argument('--' + PREDICTOR_B, action='store_true', help="Whether the predictor takes real images_real or pseudo-sim images_real")
     parser.add_argument('--' + SHOW_PREDICTIONS, type=bool, default=False, help='Path to the model')
 
     args = vars(parser.parse_args())
@@ -27,18 +31,27 @@ def get_arguments():
     return args
 
 
-def load_data(crop=100, size=(256, 256), shuffle=True):
-    # Getting the labels (XTEs)
-    frames = pd.read_csv('./xte_predictor_testset/xtes.csv', sep=';')
-    labels = list(frames['xte'])
-    filenames = frames['image_name'].to_list()
+def load_data(predictor_a, crop=100, size=(256, 256)):
+    # Getting paths depending on the type of dataset (either real images_real or pseudo-sim)
+    xte_csv_path = 'xte_predictor_testset/xtes.csv'
+    images_path = 'xte_predictor_testset/images_real' if predictor_a else 'xte_predictor_testset/images_pseudosim'
 
-    # Getting the images
+    # Getting the labels (XTEs)
+    frames = pd.read_csv(xte_csv_path, sep=';')
+    labels = list(frames['xte'])
+
+    # Getting the images_real
     images = []
-    for path in [os.path.join('./xte_predictor_testset/images', filename) for filename in filenames]:
+    images_names = sorted([file_name for file_name in os.listdir(images_path) if '.jpg' in file_name or 'png' in file_name], key=lambda name: int(name.split('_')[0]))
+
+    for name in images_names:
+        path = os.path.join(images_path, name)
         image = cv2.imread(path)
 
-        image = image[crop:, :]
+        # Real images aren't cropped in folder
+        if predictor_a:
+            image = image[crop:, :]
+
         image = cv2.resize(image, size)
         images.append(image)
 
@@ -59,7 +72,7 @@ def show_predictions(X, Y, y_hat):
     cv2.waitKey()
 
 
-def plot_absolute_errors_barchart(errors):
+def plot_absolute_errors_barchart(errors, title='XTE Predictor: Absolute error distribution on test set'):
     bin_size = 0.05
     bins = np.zeros(int(np.ceil(np.max(np.abs(errors)) / bin_size)))
 
@@ -73,7 +86,7 @@ def plot_absolute_errors_barchart(errors):
 
     ax.set_ylabel('Cardinality')
     ax.set_xlabel("|Error|")
-    ax.set_title('XTE Predictor: Absolute error distribution on test set')
+    ax.set_title(title)
     ax.legend()
 
     fig.tight_layout()
@@ -88,7 +101,7 @@ def print_mean_errors_for_classes(errors, Y):
 
     for i in [0, 1, 2, -1, -2]:
         err_class = error_classes[i]
-        print("Mean absolute error for 'class' {} is: {:.4f} (class has {} images)".format(i, np.mean(err_class), len(err_class)))
+        print("Mean absolute error for 'class' {} is: {:.4f} (class has {} images_real)".format(i, np.mean(err_class), len(err_class)))
 
 
 def main():
@@ -100,7 +113,7 @@ def main():
     model = keras.models.load_model(args[MODEL])
 
     # Loading the data
-    X, Y = load_data()
+    X, Y = load_data(not args[PREDICTOR_B])
 
     # Getting predictions
     y_hat = model.predict(X)
@@ -120,7 +133,10 @@ def main():
     print("Absolute Error mode: {}\n".format(np.percentile(np.abs(errors), 50)))
 
     # Plotting the barchart about the distribution of errors
-    plot_absolute_errors_barchart(errors)
+    color = 'b' if not args[PREDICTOR_B] else 'r'
+    title = 'XTE Predictor A:' if not args[PREDICTOR_B] else 'XTE Predictor B:'
+    title += ' Absolute error distribution on test set'
+    plot_absolute_errors_barchart(errors, title)
 
     # Mean errors for "classes" (-2, -1, 0, 1, 2)
     print_mean_errors_for_classes(errors, Y)
