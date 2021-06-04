@@ -9,24 +9,21 @@ import matplotlib.pyplot as plt
 
 from tensorflow import keras
 
-MODEL = 'model'
 PREDICTOR_B = 'predictor_b'
 SHOW_PREDICTIONS = 'show_predictions'
+STORE_PREDICTIONS = 'store_predictions'
 
 
 def get_arguments():
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--' + MODEL, type=str, default=os.path.join(pathlib.Path(__file__).parent.parent.absolute(), 'xte_predictor_a.h5'), help='Path to the model')
-    parser.add_argument('--' + PREDICTOR_B, action='store_true', help="Whether the predictor takes real images_real or pseudo-sim images_real")
+    parser.add_argument('--' + PREDICTOR_B, action='store_true',
+                        help="Wheather the predictor takes real images_real or pseudo-sim images_real")
     parser.add_argument('--' + SHOW_PREDICTIONS, action='store_true', help='Path to the model')
+    parser.add_argument('--' + STORE_PREDICTIONS, action='store_false', help="Weather to store XTE predictions or not")
 
     args = vars(parser.parse_args())
-
-    if args[MODEL] is None:
-        print("Usage: python test_xte_predictor.py --model <PATH>")
-        exit()
 
     return args
 
@@ -42,7 +39,9 @@ def load_data(predictor_a, crop=100, size=(256, 256)):
 
     # Getting the images_real
     images = []
-    images_names = sorted([file_name for file_name in os.listdir(images_path) if '.jpg' in file_name or 'png' in file_name], key=lambda name: int(name.split('_')[0]))
+    images_names = sorted(
+        [file_name for file_name in os.listdir(images_path) if '.jpg' in file_name or 'png' in file_name],
+        key=lambda name: int(name.split('_')[0]))
 
     for name in images_names:
         path = os.path.join(images_path, name)
@@ -56,6 +55,14 @@ def load_data(predictor_a, crop=100, size=(256, 256)):
         images.append(image)
 
     return np.array(images), np.array(labels)
+
+
+def store_predictions(predictions, xte_predictor_a=True):
+    file = open("Predictions_A.csv" if xte_predictor_a else "Predictions_B.csv", 'w')
+    for i in range(len(predictions)):
+        p = predictions[i]
+        file.write(str(p[0]) + "\n")
+    file.close()
 
 
 def show_predictions(X, Y, y_hat):
@@ -101,7 +108,8 @@ def print_mean_errors_for_classes(errors, Y):
 
     for i in [0, 1, 2, -1, -2]:
         err_class = error_classes[i]
-        print("Mean absolute error for 'class' {} is: {:.4f} (class has {} images_real)".format(i, np.mean(err_class), len(err_class)))
+        print("Mean absolute error for 'class' {} is: {:.4f} (class has {} images_real)".format(i, np.mean(err_class),
+                                                                                                len(err_class)))
 
 
 def main():
@@ -110,13 +118,19 @@ def main():
     print(args)
 
     # Loading model
-    model = keras.models.load_model(args[MODEL])
+    model_path = os.path.join(pathlib.Path(__file__).parent.parent.absolute(),
+                              'xte_predictor_b.h5' if args[PREDICTOR_B] else 'xte_predictor_a.h5'
+                              )
+    model = keras.models.load_model(model_path)
 
     # Loading the data
     X, Y = load_data(not args[PREDICTOR_B])
 
     # Getting predictions
     y_hat = model.predict(X)
+
+    if args[STORE_PREDICTIONS]:
+        store_predictions(y_hat, not args[PREDICTOR_B])
 
     if args[SHOW_PREDICTIONS]:
         # Showing predictions
@@ -133,7 +147,6 @@ def main():
     print("Absolute Error mode: {}\n".format(np.percentile(np.abs(errors), 50)))
 
     # Plotting the barchart about the distribution of errors
-    color = 'b' if not args[PREDICTOR_B] else 'r'
     title = 'XTE Predictor A:' if not args[PREDICTOR_B] else 'XTE Predictor B:'
     title += ' Absolute error distribution on test set'
     plot_absolute_errors_barchart(errors, title)
