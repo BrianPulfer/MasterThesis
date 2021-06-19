@@ -14,14 +14,14 @@ DEFINITIONS = [TUB, CROP, SIM]
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--" + TUB, type=str, help="Path to the tub of the online test")
+    parser.add_argument("--" + TUB, type=str, help="Path to the tub of the online_data test")
     parser.add_argument("--" + CROP, type=int, default=100, help="Number of top pixels to be cropped. Default: 100")
     parser.add_argument("--" + SIM, type=bool, default=False,
                         help="Whether the testing is in the simulator (use actual XTEs) or in the real-world (use XTE predictor).")
     args = vars(parser.parse_args())
 
     if args[TUB] is None:
-        print("Usage: python online.py --tub <path> (--crop <crop value> --sim <boolean>)")
+        print("Usage: python online_data.py --tub <path> (--crop <crop value> --sim <boolean>)")
         exit()
 
     return args
@@ -70,7 +70,7 @@ def main():
     # Getting tub infos
     steers, throttles = get_tub_infos(args[TUB])
 
-    # Printing online testing metrics
+    # Printing online_data testing metrics
     print(
         "~XTE abs avg: {}\n"
         "~XTE abs max: {}\n"

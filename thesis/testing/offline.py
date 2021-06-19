@@ -12,6 +12,7 @@ TUB_PATH = 'tub'
 CROP_TOP = 'crop'
 MODEL_PATH = 'model'
 DAVE2 = 'dave2'
+STORE_ERRORS = 'store'
 
 
 def get_args():
@@ -21,6 +22,7 @@ def get_args():
     parser.add_argument("--" + CROP_TOP, type=int, default=100, help="Crop-top value. Default: 100")
     parser.add_argument("--" + MODEL_PATH, type=str, help="Path to the model to test")
     parser.add_argument("--" + DAVE2, type=bool, default=False, help="Whether the tested architecture is DAVE2")
+    parser.add_argument("--" + STORE_ERRORS, type=bool, default=True, help="Store steering prediction errors")
     args = vars(parser.parse_args())
 
     if not args[TUB_PATH] or not args[MODEL_PATH]:
@@ -53,7 +55,7 @@ def load_model_and_check_sizes(model_path, tub_path, crop_top):
         print("Sizes seem to match\n")
 
     print(model.summary())
-    return model, w, h
+    return model, input_size[0], input_size[1]
 
 
 def get_dataset(tub_path, w, h, crop_top, dave2=False):
@@ -72,14 +74,14 @@ def get_dataset(tub_path, w, h, crop_top, dave2=False):
         record_path = os.path.join(tub_path, "record_" + image_name.split("_")[0] + ".json")
 
         # Loading image and relative record
-        image = Image.open(image_path)
-        resized = image.resize((w, h))
+        image = np.array(Image.open(image_path))
+        cropped = image[crop_top:, ...]
+        resized = cv2.resize(cropped, (w, h))
         normalized = np.array(resized) / 255.0
-        cropped = normalized[crop_top:, ...]
 
         if dave2:
-            cropped = cv2.cvtColor((cropped * 255).astype('uint8'), cv2.COLOR_RGB2YUV)
-            cropped = cropped.astype('float') / 255
+            normalized = cv2.cvtColor((normalized * 255).astype('uint8'), cv2.COLOR_RGB2YUV)
+            normalized = normalized.astype('float') / 255
 
         record = json.load(open(record_path))
 
@@ -88,15 +90,16 @@ def get_dataset(tub_path, w, h, crop_top, dave2=False):
         throttle = record['user/throttle']
 
         # Adding data in the tensor
-        X.append(np.array(cropped).astype(np.float32))
+        X.append(np.array(normalized).astype(np.float32))
         Y.append(np.array([angle, throttle]))
 
     return np.array(X), np.array(Y)
 
 
-def eval_model(angle_predictions, throttle_predictions, Y):
+def eval_model(angle_predictions, throttle_predictions, Y, store_errors=True):
     mse_steer, mse_throttle = 0, 0
     mae_steer, mae_throttle = 0, 0
+    angle_errors = []
     for i in range(len(Y)):
         s, t = Y[i][0], Y[i][1]
         s_hat, t_hat = angle_predictions[i][0], throttle_predictions[i][0]
@@ -106,6 +109,15 @@ def eval_model(angle_predictions, throttle_predictions, Y):
 
         mae_steer += abs(s_hat - s)
         mae_throttle += abs(t_hat - t)
+
+        angle_errors.append(s - s_hat)
+
+    # Writing steering errors
+    if store_errors:
+        file = open("steer_errors.txt", 'w')
+        for err in angle_errors:
+            file.write(str(err)+"\n")
+        file.close()
 
     # Getting average
     mse_steer /= len(Y)
@@ -136,7 +148,7 @@ def main():
     throttle_predictions = Y_hat[1]
 
     # Evaluating model offline
-    loss, mse_steer, mse_throttle, mae_steer, mae_throttle = eval_model(angle_predictions, throttle_predictions, Y)
+    loss, mse_steer, mse_throttle, mae_steer, mae_throttle = eval_model(angle_predictions, throttle_predictions, Y, args[STORE_ERRORS])
 
     # Printing
     print("Steering MSE: {}\t\tThrottle MSE: {}".format(mse_steer, mse_throttle))

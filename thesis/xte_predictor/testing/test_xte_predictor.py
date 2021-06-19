@@ -68,14 +68,14 @@ def store_predictions(predictions, xte_predictor_a=True):
 def show_predictions(X, Y, y_hat):
     for image, xte, xte_hat in zip(X, Y, y_hat):
         img = image
-        cv2.putText(img, "~XTE: " + str(xte_hat),
+        cv2.putText(img, "~XTE: " + str(xte_hat[0]),
                     (64, 32),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
                     (255, 255, 255),
                     2)
-        cv2.imshow("XTE: " + str(xte), img)
-        cv2.waitKey(100)
+        cv2.imshow("XTE", img)
+        cv2.waitKey(20)
     cv2.waitKey()
 
 

@@ -1,0 +1,60 @@
+Description:
+Offline wilcoxon test is done on the predictions errors on some fixed test set.
+Online wilcoxon test is done on the alligned XTEs
+
+CROPPING EXPERIMENT:
+CROPPING OFFLINE - Simulator
+Crop80, Crop100, 0.71
+Crop80, Crop120, 0.17
+Crop100, Crop120, 0.95
+
+CROPPING OFFLINE - Real world
+Crop80, Crop100, 6.7e-07
+Crop80, Crop120, 4e-0.7
+Crop100, Crop120, 0.0838
+
+CROPPING ONLINE - Simulator
+Crop80, Crop100, 6.3e-10
+Crop80, Crop120, 4.7e-85
+Crop100, Crop120, 4.5e-75
+
+CROPPING ONLINE - Real world
+Crop80, Crop100, 2.44e-8
+Crop80, Crop120, 0.049
+Crop100, Crop120, 0.00967
+
+
+
+
+ARCHITECTURES EXPERIMENT:
+ARCHITECTURES OFFLINE - Simulator
+Chauffeur, Dave2, 1.25e-34
+Chauffeur, Default, 4.24e-20
+Chauffeur, Epoch, 2.86e-09
+Dave2, Default, 3.95e-12
+Dave2, Epoch, 8.08e-32
+Default, Epoch, 6.678e-07
+
+ARCHITECTURES OFFLINE - Real World
+Chauffeur, Dave2, 1.73e-19
+Chauffeur, Default, 0.0008055
+Chauffeur, Epoch, 1.81e-05
+Dave2, Default, 8.68e-12
+Dave2, Epoch, 6.45e-07
+Default, Epoch, 4e-06
+
+ARCHITECTURES ONLINE - Simulator
+Chauffeur, Dave2, 1.86e-133
+Chauffeur, Default, 7.75e-44
+Chauffeur, Epoch, 2.4e-5
+Dave2, Default, 3.0e-19
+Dave2, Epoch, 3.5e-123
+Default, Epoch, 8.68e-85
+
+ARCHITECTURES ONLINE - Real world
+Chauffeur, Dave2, 4.22e-193
+Chauffeur, Default, 5.86e-30
+Chauffeur, Epoch, 7.98e-154
+Dave2, Default, 1.11e-143
+Dave2, Epoch, 6.05e-19
+Default, Epoch, 6.23e-102
